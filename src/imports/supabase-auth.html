@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase 인증 서비스</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Pretendard', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background-color: #f0f2f5; }
+        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); width: 100%; max-width: 350px; }
+        h2 { text-align: center; color: #1c1c1c; margin-bottom: 25px; }
+        label { font-size: 14px; color: #666; display: block; margin-bottom: 5px; }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; transition: border 0.3s; }
+        input:focus { border-color: #3ecf8e; outline: none; }
+        button { width: 100%; padding: 12px; background-color: #3ecf8e; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px; }
+        button:hover { background-color: #36b37a; }
+        .secondary-btn { background-color: #f0f2f5; color: #666; margin-top: 5px; }
+        .secondary-btn:hover { background-color: #e4e6e9; }
+        .logout-btn { background-color: #ff4d4f; margin-top: 20px; }
+        .logout-btn:hover { background-color: #ff7875; }
+        #status, #loginStatus { margin-top: 20px; font-size: 14px; text-align: center; min-height: 20px; }
+        .hidden { display: none !important; } /* 화면 전환을 위한 클래스 */
+        
+        /* 메인 페이지 스타일 */
+        #welcome-msg { text-align: center; font-size: 18px; color: #333; }
+        .user-id { color: #3ecf8e; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div id="signup-container" class="container">
+    <h2>회원가입</h2>
+    <label for="loginId">아이디</label>
+    <input type="text" id="loginId" placeholder="아이디를 입력하세요">
+    
+    <label for="password">비밀번호</label>
+    <input type="password" id="password" placeholder="비밀번호를 입력하세요">
+    
+    <label for="email">이메일 (선택)</label>
+    <input type="email" id="email" placeholder="example@email.com">
+    
+    <button onclick="handleSignUp()">가입 완료</button>
+    <button class="secondary-btn" onclick="toggleView()">이미 계정이 있나요? 로그인</button>
+    <p id="status"></p>
+</div>
+
+<div id="login-container" class="container hidden">
+    <h2>로그인</h2>
+    <label for="loginUser">아이디</label>
+    <input type="text" id="loginUser" placeholder="아이디를 입력하세요">
+    
+    <label for="loginPw">비밀번호</label>
+    <input type="password" id="loginPw" placeholder="비밀번호를 입력하세요">
+    
+    <button onclick="handleLogin()">로그인</button>
+    <button class="secondary-btn" onclick="toggleView()">계정이 없나요? 회원가입</button>
+    <p id="loginStatus"></p>
+</div>
+
+<div id="main-container" class="container hidden">
+    <h2>메인 페이지</h2>
+    <div id="welcome-msg">
+        <p>환영합니다, <span id="display-user" class="user-id"></span>님!</p>
+        <p>성공적으로 로그인되었습니다.</p>
+    </div>
+    <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+</div>
+
+<script>
+    const SUPABASE_URL = "https://yxmabhogqpxndrfpnofg.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_NPmRDVDgv2Ct4i9TnYbRmA_sSVoMPDI";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // 화면 전환 함수 (회원가입 <-> 로그인)
+    function toggleView() {
+        document.getElementById('signup-container').classList.toggle('hidden');
+        document.getElementById('login-container').classList.toggle('hidden');
+        document.getElementById('status').innerText = '';
+        document.getElementById('loginStatus').innerText = '';
+    }
+
+    // 메인 페이지로 이동하는 함수
+    function showMainPage(userId) {
+        document.getElementById('login-container').classList.add('hidden');
+        document.getElementById('signup-container').classList.add('hidden');
+        document.getElementById('main-container').classList.remove('hidden');
+        document.getElementById('display-user').innerText = userId;
+    }
+
+    // 로그아웃 함수 (다시 로그인 화면으로)
+    function handleLogout() {
+        document.getElementById('main-container').classList.add('hidden');
+        document.getElementById('login-container').classList.remove('hidden');
+        document.getElementById('loginUser').value = '';
+        document.getElementById('loginPw').value = '';
+        document.getElementById('loginStatus').innerText = '로그아웃 되었습니다.';
+        document.getElementById('loginStatus').style.color = "#666";
+    }
+
+    // 회원가입 함수
+    async function handleSignUp() {
+        const loginId = document.getElementById('loginId').value;
+        const password = document.getElementById('password').value;
+        const email = document.getElementById('email').value;
+        const statusEl = document.getElementById('status');
+
+        if (!loginId || !password) {
+            statusEl.innerText = "아이디와 비밀번호를 모두 입력해주세요.";
+            statusEl.style.color = "#ff4d4f";
+            return;
+        }
+
+        statusEl.innerText = "가입 처리 중...";
+        statusEl.style.color = "#1890ff";
+
+        const { data, error } = await supabaseClient
+            .from('users')
+            .insert([{ login_id: loginId, password: password, email: email }]);
+
+        if (error) {
+            statusEl.innerText = "오류: " + error.message;
+            statusEl.style.color = "#ff4d4f";
+        } else {
+            statusEl.innerText = "🎉 가입 성공! 2초 후 로그인 창으로 이동합니다.";
+            statusEl.style.color = "#52c41a";
+            
+            setTimeout(() => {
+                toggleView();
+                document.getElementById('loginUser').value = loginId;
+            }, 2000);
+        }
+    }
+
+    // 로그인 함수
+    async function handleLogin() {
+        const loginId = document.getElementById('loginUser').value;
+        const password = document.getElementById('loginPw').value;
+        const statusEl = document.getElementById('loginStatus');
+
+        statusEl.innerText = "로그인 확인 중...";
+        statusEl.style.color = "#1890ff";
+
+        const { data, error } = await supabaseClient
+            .from('users')
+            .select('*')
+            .eq('login_id', loginId)
+            .eq('password', password)
+            .single();
+
+        if (error || !data) {
+            statusEl.innerText = "아이디 또는 비밀번호가 틀렸습니다.";
+            statusEl.style.color = "#ff4d4f";
+        } else {
+            // 로그인 성공 시 메인 페이지 호출
+            showMainPage(data.login_id);
+        }
+    }
+</script>
+
+</body>
+</html>
+
+위에 있는 코드 수정없이 필요한 기능 
+foot 부분에 페이스북, 인스타그램, 유튜브 버튼을 클릭하면 url 주소로 넘어 갈 수 있게 구현해줘
+
+제품란에 별점리뷰 할 수 있게끔 0~5점까지 점수를 줄 수 있는 기능을 추가해줘
+슬롯(=slot)부분에 technology our story, contact 뺴고 검색기능, 장바구니(+버튼을 만들어서 제품 개수를 넣을 수 있게 구현하기) 추가해주고 
+메인홈페이지에 도움말 및 리소스란-> 챗봇 기능을 넣을거야,
+
+supabase api key 있어
+.env파일로 만들어줘
+.gitignore 파일 만들어줘
+기존코드로 .html로 open with live server 실행시켜도 돌아가는건지
