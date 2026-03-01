@@ -20,7 +20,7 @@ export function ProductShowcase({ onBuyNow }: ProductShowcaseProps) {
       price: 35,
       rating: 4.5,
       reviews: 241,
-      image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8c3Vuc2NyZWVuJTIwc2VydW0lMjBib3R0bGV8ZW58MHx8fHwxNzE5MDAwMDAwfDA&ixlib=rb-4.1.0&q=80&w=1080',
+      image: './sunserum_hero.png',
       features: [t('products.feature1'), t('products.feature2'), t('products.feature3')],
     },
     {
@@ -30,10 +30,9 @@ export function ProductShowcase({ onBuyNow }: ProductShowcaseProps) {
       price: 89,
       rating: 4.5,
       reviews: 132,
-      image: '/ｂｌａｃｋｐｉｎｋ.png',
+      image: './blackpink_hero.png',
       features: ['Klear X BLACKPINK', 'Vegan', 'K-Beauty'],
     },
-
   ];
 
   const benefits = [
@@ -100,8 +99,8 @@ export function ProductShowcase({ onBuyNow }: ProductShowcaseProps) {
           </p>
         </motion.div>
 
-        {/* Product Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-20">
+{/* Product Grid */}
+        <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto mb-20">
           {products.map((product, index) => (
             <motion.div
               key={product.id}
@@ -109,16 +108,17 @@ export function ProductShowcase({ onBuyNow }: ProductShowcaseProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.2, duration: 0.6 }}
-              className="group relative"
+              // h-full, flex, flex-col 추가
+              className="group relative h-full flex flex-col"
             >
-              <div className="relative bg-white border border-[#E6E6E0] rounded-3xl overflow-hidden hover:border-[#A9C356]/50 transition-all duration-500 hover:shadow-2xl hover:shadow-[#A9C356]/10">
+              <div className="relative h-full flex flex-col bg-white border border-[#E6E6E0] rounded-3xl overflow-hidden hover:border-[#A9C356]/50 transition-all duration-500 hover:shadow-2xl hover:shadow-[#A9C356]/10">
                 {/* Product Image */}
-                <div className="relative h-80 overflow-hidden flex items-center justify-center bg-white">
+                <div className="relative h-96 overflow-hidden flex items-center justify-center bg-white flex-shrink-0">
                   <ImageWithFallback
                     src={product.image}
                     alt={product.name}
                     className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-700"
-                    fallbackSrc="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+                    fallbackSrc="./sunserum_hero.png"
                   />
                   
                   <div className="absolute inset-0 bg-gradient-to-t from-[#A9C356]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -128,51 +128,55 @@ export function ProductShowcase({ onBuyNow }: ProductShowcaseProps) {
                   </div>
                 </div>
 
-                {/* Product Info */}
-                <div className="p-6">
-                  <h3 className="text-lg font-bold text-[#111111] mb-1">{product.name}</h3>
-                  <span className="text-xl font-bold text-[#6F832E] block mb-2">
+{/* Product Info - flex, flex-col, flex-grow 유지 */}
+                <div className="p-8 flex flex-col flex-grow">
+                  {/* 수정 1: 타이틀 2줄 고정 (min-h-[56px], line-clamp-2, break-keep 추가) */}
+                  <h3 className="text-xl font-bold text-[#111111] mb-1 min-h-[56px] line-clamp-2 break-keep">
+                    {product.name}
+                  </h3>
+                  <span className="text-2xl font-bold text-[#6F832E] block mb-4">
                     ${product.price}
                   </span>
 
-                  {/* Dummy Star Rating */}
-                  <div className="flex items-center justify-center bg-white gap-2 mb-4">
+                  <div className="flex items-center justify-start bg-white gap-2 mb-6">
                     <div className="flex gap-0.5">
                       {[1, 2, 3, 4].map((s) => (
-                        <Star key={s} size={16} className="fill-[#A9C356] text-[#A9C356]" />
+                        <Star key={s} size={18} className="fill-[#A9C356] text-[#A9C356]" />
                       ))}
-                      <div className="relative" style={{ width: 16, height: 16 }}>
-                        <Star size={16} className="text-gray-300 absolute top-0 left-0" />
+                      <div className="relative" style={{ width: 18, height: 18 }}>
+                        <Star size={18} className="text-gray-300 absolute top-0 left-0" />
                         <div className="overflow-hidden absolute top-0 left-0" style={{ width: '50%' }}>
-                          <Star size={16} className="fill-[#A9C356] text-[#A9C356]" />
+                          <Star size={18} className="fill-[#A9C356] text-[#A9C356]" />
                         </div>
                       </div>
                     </div>
                     <span className="text-sm text-[#2C2C2C]/50">({product.rating})</span>
-                    <span className="text-sm text-[#2C2C2C]/50">Review {product.reviews}</span>
+                    <span className="text-sm text-[#2C2C2C]/50 ml-2">Review {product.reviews}</span>
                   </div>
 
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  {/* 수정 2: 해시태그 영역 높이 변동 방지 (min-h-[36px] 및 overflow-hidden 추가) */}
+                  <div className="flex flex-wrap gap-2 mb-6 min-h-[36px] overflow-hidden">
                     {product.features.map((feature) => (
                       <span
                         key={feature}
-                        className="px-3 py-1 bg-[#EEF2E0] border border-[#E6E6E0] rounded-full text-xs text-[#6F832E]"
+                        className="px-3 py-1.5 bg-[#EEF2E0] border border-[#E6E6E0] rounded-full text-sm text-[#6F832E] whitespace-nowrap"
                       >
                         {feature}
                       </span>
                     ))}
                   </div>
 
-<div className="grid grid-cols-2 gap-3">
+                  {/* 하단 버튼 고정 영역 유지 */}
+                  <div className="grid grid-cols-2 gap-4 mt-auto pt-4">
                     <button
                       onClick={() => handleBuyNow(product)}
-                      className="py-3 bg-[#A9C356] hover:bg-[#8FA93C] text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-[#A9C356]/30 transition-all duration-300 hover:scale-105 text-sm"
+                      className="py-4 bg-[#A9C356] hover:bg-[#8FA93C] text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-[#A9C356]/30 transition-all duration-300 hover:scale-105 text-sm"
                     >
                       {t('products.cta')}
                     </button>
                     <button
                       onClick={() => handleAddToCart(product)}
-                      className="flex items-center justify-center gap-2 py-3 bg-white hover:bg-[#EEF2E0] border border-[#A9C356] rounded-xl font-semibold transition-all duration-300 hover:scale-105 text-[#6F832E] text-sm"
+                      className="flex items-center justify-center gap-2 py-4 bg-white hover:bg-[#EEF2E0] border border-[#A9C356] rounded-xl font-semibold transition-all duration-300 hover:scale-105 text-[#6F832E] text-sm"
                     >
                       <Plus size={18} />
                       Cart
@@ -195,7 +199,7 @@ export function ProductShowcase({ onBuyNow }: ProductShowcaseProps) {
               transition={{ delay: index * 0.1, duration: 0.5 }}
               className="relative group"
             >
-              <div className="bg-white border border-[#E6E6E0] rounded-2xl p-6 hover:bg-[#EEF2E0] hover:border-[#A9C356]/30 transition-all duration-300">
+              <div className="bg-white border border-[#E6E6E0] rounded-2xl p-6 hover:bg-[#EEF2E0] hover:border-[#A9C356]/30 transition-all duration-300 h-full">
                 <div className="inline-flex p-3 bg-[#EEF2E0] rounded-xl mb-4 group-hover:scale-110 transition-transform duration-300">
                   <benefit.icon className="w-6 h-6 text-[#6F832E]" />
                 </div>

@@ -129,7 +129,27 @@ const translations = {
     'footer.copyright': '© 2026 Klear. All rights reserved.',
     'footer.innovation': '글로벌 혁신',
     'footer.innovation.desc': 'K-Beauty 프리미엄 선케어 솔루션으로 가볍고 편안한 자외선 차단을 선도합니다.',
+
+    // Reviews & Community
+    '제품리뷰': '제품리뷰',
+    '실제 사용자들의 생생한 리뷰': '실제 사용자들의 생생한 리뷰',
+    'Jane Cooper': '제인 쿠퍼',
+    'Fabulous!': '정말 멋져요!',
+    'Lightweight and hydrating — it feels more like a serum than sunscreen. My skin stays soft, calm, and comfortable all day.': '가볍고 촉촉합니다 — 선크림보다는 세럼에 가깝습니다. 하루 종일 피부가 부드럽고 편안하게 유지됩니다.',
+    'Kathryn Murphy': '캐서린 머피',
+    'No Joke, So Gentle.': '장난 아님, 정말 순해요.',
+    'My skin gets irritated easily, but this product feels very gentle and calming. It reduced redness overnight and didn\'t cause any breakouts. Perfect for sensitive skin.': '제 피부는 쉽게 자극받는데, 이 제품은 매우 순하고 진정되는 느낌입니다. 하룻밤 사이에 홍조가 줄었고 트러블도 없었습니다. 민감성 피부에 완벽해요.',
+    'Savannah Nguyen': '사바나 응우옌',
+    'Glow Hits Different.': '광채가 남다릅니다.',
+    'The glow this gives is beautiful but natural — not greasy at all. It absorbs quickly and leaves my skin looking healthy and fresh. Great for everyday use.': '이 제품이 주는 광채는 아름답지만 자연스럽습니다 — 전혀 기름지지 않아요. 빠르게 흡수되고 피부가 건강하고 산뜻해 보입니다. 매일 사용하기 좋습니다.',
+    'Eleanor Pena': '엘리너 페냐',
+    'Obsessed!!': '완전 푹 빠졌어요!!',
+    'Super gentle on my skin and easy to wear every day. It layers perfectly under makeup without pilling.': '피부에 아주 순하고 매일 바르기 편합니다. 메이크업 전 단계에 발라도 밀림 없이 완벽하게 레이어링 됩니다.',
+    'Theresa Webb': '테레사 웹',
+    'Literally So Good.': '말 그대로 너무 좋아요.',
+    'This cleanser removes sunscreen and makeup residue really well without drying my skin. The oil is soft and creamy, and my face feels clean but balanced afterwards.': '이 클렌저는 피부를 건조하게 하지 않으면서 선크림과 메이크업 잔여물을 정말 잘 지워줍니다. 오일이 부드럽고 크리미하며, 사용 후 얼굴이 깨끗하면서도 유수분 밸런스가 맞는 느낌입니다.',
   },
+  
   en: {
     // Navigation
     'nav.home': 'Home',
@@ -247,6 +267,25 @@ const translations = {
     'footer.copyright': '© 2026 Klear. All rights reserved.',
     'footer.innovation': 'Global Innovation',
     'footer.innovation.desc': 'Leading lightweight sun protection with premium K-Beauty sun care solutions.',
+
+    // Reviews & Community
+    '제품리뷰': 'Product Reviews',
+    '실제 사용자들의 생생한 리뷰': 'The Real Reviews of the Community',
+    'Jane Cooper': 'Jane Cooper',
+    'Fabulous!': 'Fabulous!',
+    'Lightweight and hydrating — it feels more like a serum than sunscreen. My skin stays soft, calm, and comfortable all day.': 'Lightweight and hydrating — it feels more like a serum than sunscreen. My skin stays soft, calm, and comfortable all day.',
+    'Kathryn Murphy': 'Kathryn Murphy',
+    'No Joke, So Gentle.': 'No Joke, So Gentle.',
+    'My skin gets irritated easily, but this product feels very gentle and calming. It reduced redness overnight and didn\'t cause any breakouts. Perfect for sensitive skin.': 'My skin gets irritated easily, but this product feels very gentle and calming. It reduced redness overnight and didn\'t cause any breakouts. Perfect for sensitive skin.',
+    'Savannah Nguyen': 'Savannah Nguyen',
+    'Glow Hits Different.': 'Glow Hits Different.',
+    'The glow this gives is beautiful but natural — not greasy at all. It absorbs quickly and leaves my skin looking healthy and fresh. Great for everyday use.': 'The glow this gives is beautiful but natural — not greasy at all. It absorbs quickly and leaves my skin looking healthy and fresh. Great for everyday use.',
+    'Eleanor Pena': 'Eleanor Pena',
+    'Obsessed!!': 'Obsessed!!',
+    'Super gentle on my skin and easy to wear every day. It layers perfectly under makeup without pilling.': 'Super gentle on my skin and easy to wear every day. It layers perfectly under makeup without pilling.',
+    'Theresa Webb': 'Theresa Webb',
+    'Literally So Good.': 'Literally So Good.',
+    'This cleanser removes sunscreen and makeup residue really well without drying my skin. The oil is soft and creamy, and my face feels clean but balanced afterwards.': 'This cleanser removes sunscreen and makeup residue really well without drying my skin. The oil is soft and creamy, and my face feels clean but balanced afterwards.',
   },
 };
 

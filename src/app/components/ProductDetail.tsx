@@ -19,7 +19,7 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
     name: 'Bemot Moisturizing Sun Serum SPF 50',
     price: 35,
     volume: '50ml / 1.69 fl oz',
-    image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8c3Vuc2NyZWVuJTIwc2VydW0lMjBib3R0bGV8ZW58MHx8fHwxNzE5MDAwMDAwfDA&ixlib=rb-4.1.0&q=80&w=1080',
+    image: './sunserum_hero.png',
   };
 
   const handleBuyNow = () => {

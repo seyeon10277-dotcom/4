@@ -55,8 +55,7 @@ export function Navigation({ menuOpen, setMenuOpen, onSearchOpen, onCartOpen, on
               className="cursor-pointer flex items-center gap-2"
               onClick={onGoHome}
             >
-              <img src="/klear-logo.png" alt="Klear" className="h-10 w-auto rounded-lg" />
-              <span className="text-2xl font-bold text-[#6F832E]">Klear</span>
+              <img src="/klear-logo-header.png" alt="Klear" className="h-10 w-auto rounded-lg" />
             </motion.div>
 
             {/* Desktop Menu */}
