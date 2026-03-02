@@ -7,28 +7,20 @@ export function Footer() {
 
   const footerLinks = {
     products: [
-      { label: t('footer.product1'), href: '#' },
-      { label: t('footer.product2'), href: '#' },
-      { label: t('footer.product3'), href: '#' },
-      { label: t('footer.product4'), href: '#' },
+      { label: t('footer.product1'), href: '#products' },
+      { label: t('footer.product2'), href: '#products' },
+      { label: t('footer.product3'), href: '#technology' },
     ],
     company: [
-      { label: t('footer.company1'), href: '#story' },
-      { label: t('footer.company2'), href: '#technology' },
-      { label: t('footer.company3'), href: '#' },
-      { label: t('footer.company4'), href: '#' },
+      { label: t('footer.company1'), href: '#about' },
+      { label: t('footer.company2'), href: '#' },
     ],
     support: [
-      { label: t('footer.support1'), href: '#' },
-      { label: t('footer.support2'), href: '#' },
-      { label: t('footer.support3'), href: '#' },
-      { label: t('footer.support4'), href: '#' },
+      { label: t('footer.support1'), href: '#'},
     ],
     legal: [
       { label: t('footer.legal1'), href: '#' },
       { label: t('footer.legal2'), href: '#' },
-      { label: t('footer.legal3'), href: '#' },
-      { label: t('footer.legal4'), href: '#' },
     ],
   };
 
@@ -70,7 +62,7 @@ export function Footer() {
                 <img src="/klear-logo.png" alt="Klear" className="h-8 w-auto rounded-lg" />
                 <span className="text-2xl font-bold text-[#6F832E]">Klear</span>
               </div>
-              <p className="text-[#2C2C2C]/60 mb-6 leading-relaxed">{t('footer.tagline')}</p>
+              <p className="text-[#2C2C2C]/60 mb-6 leading-relaxed whitespace-pre-line">{t('footer.tagline')}</p>
               <div className="space-y-3 text-sm text-[#2C2C2C]/60">
                 <div className="flex items-center gap-3"><MapPin className="w-4 h-4 text-[#6F832E]" /><span>Seoul, South Korea</span></div>
                 <div className="flex items-center gap-3"><Phone className="w-4 h-4 text-[#6F832E]" /><span>+82 (2) 1234-5678</span></div>

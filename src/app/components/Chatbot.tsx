@@ -23,7 +23,6 @@ export function Chatbot() {
   const [inputValue, setInputValue] = useState('');
   const { language } = useLanguage();
 
-  // 대화 초기화 함수
   const handleReset = () => {
     setMessages([
       {
@@ -115,13 +114,13 @@ export function Chatbot() {
   };
 
   return (
-    <>
+    <section id="chatbot" className="pointer-events-none">
       {/* Chat Button - 🤖 이모지 이미지 */}
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full shadow-2xl z-40 hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center overflow-hidden"
+        className="pointer-events-auto fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full shadow-2xl z-40 hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center overflow-hidden"
       >
         {isOpen ? (
           <X size={24} className="text-white" />
@@ -138,7 +137,7 @@ export function Chatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed bottom-24 right-6 w-96 h-[500px] bg-gradient-to-br from-blue-950 via-purple-950 to-blue-900 border border-white/10 rounded-3xl shadow-2xl z-40 flex flex-col overflow-hidden"
+            className="pointer-events-auto fixed bottom-24 right-6 w-96 h-[500px] bg-gradient-to-br from-blue-950 via-purple-950 to-blue-900 border border-white/10 rounded-3xl shadow-2xl z-40 flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="p-4 border-b border-white/10 bg-white/5">
@@ -217,6 +216,6 @@ export function Chatbot() {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </section>
   );
 }

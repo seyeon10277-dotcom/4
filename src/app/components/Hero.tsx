@@ -18,8 +18,8 @@ export function Hero({ onShopNow }: HeroProps) {
       id: 1,
       title: t('hero.title1'),
       subtitle: t('hero.subtitle1'),
-      description: 'Klear X Black Pink 스페셜 에디션 스킨케어 세트를 합리적인 가격에 만나고 전 세계가 주목하는 블랙핑크와 함께하는 가장 깨끗한 뷰티 루틴을 시작해보세요',
-      image: '/blackpink_hero.png',  
+      description: t('hero.desc1'),
+      image: '/blackpink_hero.png',
       badge: t('hero.badge1'),
     },
     {
@@ -121,13 +121,13 @@ export function Hero({ onShopNow }: HeroProps) {
                 <span className="inline-block px-4 py-2 bg-[#EEF2E0] border border-[#A9C356]/30 rounded-full text-sm font-semibold mb-4 text-[#6F832E]">
                   {slides[currentSlide].badge}
                 </span>
-                <h2 className="text-sm uppercase tracking-widest text-[#8FA93C] mb-4">
+                <h2 className="text-sm uppercase tracking-widest text-[#8FA93C] mb-4 whitespace-pre-line">
                   {slides[currentSlide].subtitle}
                 </h2>
-                <h1 className="text-5xl md:text-7xl font-bold mb-6 text-[#111111] leading-tight">
+                <h1 className="text-5xl md:text-7xl font-bold mb-6 text-[#111111] leading-tight whitespace-pre-line">
                   {slides[currentSlide].title}
                 </h1>
-                <p className="text-xl text-[#2C2C2C]/70 leading-relaxed">
+                <p className="text-xl text-[#2C2C2C]/70 leading-relaxed whitespace-pre-line mb-8">
                   {slides[currentSlide].description}
                 </p>
               </motion.div>

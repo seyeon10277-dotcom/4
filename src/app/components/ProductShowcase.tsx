@@ -15,9 +15,10 @@ export function ProductShowcase({ onBuyNow }: ProductShowcaseProps) {
   const products = [
     {
       id: 'bemot-sun-serum-50ml',
-      name: 'Bemot Moisturizing Sun Serum SPF 50',
-      category: t('products.device'),
-      price: 35,
+      name: language === 'ko' ? '비모트 수분 선 세럼 SPF 50' : 'Bemot Moisturizing Sun Serum SPF 50',
+      category: t('products.serum'),
+      price: 29.99, // 할인가로 변경
+      originalPrice: 35, // 기존 가격 추가
       rating: 4.5,
       reviews: 241,
       image: './sunserum_hero.png',
@@ -26,12 +27,13 @@ export function ProductShowcase({ onBuyNow }: ProductShowcaseProps) {
     {
       id: 'blackpink-special-edition',
       name: language === 'ko' ? '블랙핑크 스페셜 에디션 스킨케어 세트' : 'BLACKPINK Special Edition Skincare Set',
-      category: 'Special Edition',
-      price: 89,
+      category: t('products.special'),
+      price: 59.99, // 할인가로 변경
+      originalPrice: 67, // 기존 가격 추가
       rating: 4.5,
       reviews: 132,
-      image: './blackpink_hero.png',
-      features: ['Klear X BLACKPINK', 'Vegan', 'K-Beauty'],
+      image: './blackpink_productshow.png',
+      features: [t('products.feature4'), t('products.feature5'), t('products.feature6')],
     },
   ];
 
@@ -100,7 +102,7 @@ export function ProductShowcase({ onBuyNow }: ProductShowcaseProps) {
         </motion.div>
 
 {/* Product Grid */}
-        <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto mb-20">
+        <div className="grid md:grid-cols-2 gap-12 mb-20">
           {products.map((product, index) => (
             <motion.div
               key={product.id}
@@ -113,11 +115,12 @@ export function ProductShowcase({ onBuyNow }: ProductShowcaseProps) {
             >
               <div className="relative h-full flex flex-col bg-white border border-[#E6E6E0] rounded-3xl overflow-hidden hover:border-[#A9C356]/50 transition-all duration-500 hover:shadow-2xl hover:shadow-[#A9C356]/10">
                 {/* Product Image */}
-                <div className="relative h-96 overflow-hidden flex items-center justify-center bg-white flex-shrink-0">
+                <div className="relative h-96 overflow-hidden flex-shrink-0">
                   <ImageWithFallback
                     src={product.image}
                     alt={product.name}
-                    className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-700"
+                    // object-cover로 변경하고 비율 설정을 제거합니다.
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     fallbackSrc="./sunserum_hero.png"
                   />
                   
@@ -134,9 +137,16 @@ export function ProductShowcase({ onBuyNow }: ProductShowcaseProps) {
                   <h3 className="text-xl font-bold text-[#111111] mb-1 min-h-[56px] line-clamp-2 break-keep">
                     {product.name}
                   </h3>
-                  <span className="text-2xl font-bold text-[#6F832E] block mb-4">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-2xl font-bold text-[#E63946]">
                     ${product.price}
                   </span>
+                  {product.originalPrice && (
+                    <span className="text-lg font-medium text-[#8F8F8F] line-through">
+                      ${product.originalPrice}
+                    </span>
+                  )}
+                </div>
 
                   <div className="flex items-center justify-start bg-white gap-2 mb-6">
                     <div className="flex gap-0.5">
