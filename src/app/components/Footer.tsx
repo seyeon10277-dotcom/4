@@ -2,7 +2,11 @@ import { motion } from 'motion/react';
 import { Facebook, Instagram, Twitter, Youtube, Mail, MapPin, Phone } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
-export function Footer() {
+interface FooterProps {
+  onGoToAbout?: () => void;
+}
+
+export function Footer({ onGoToAbout }: FooterProps) {
   const { t } = useLanguage();
 
   const footerLinks = {
@@ -59,8 +63,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
               <div className="flex items-center gap-2 mb-4">
-                <img src="/klear-logo.png" alt="Klear" className="h-8 w-auto rounded-lg" />
-                <span className="text-2xl font-bold text-[#6F832E]">Klear</span>
+                <img src="/klear-logo-header.png" className="h-8 auto" />
               </div>
               <p className="text-[#2C2C2C]/60 mb-6 leading-relaxed whitespace-pre-line">{t('footer.tagline')}</p>
               <div className="space-y-3 text-sm text-[#2C2C2C]/60">
@@ -81,7 +84,21 @@ export function Footer() {
               <h4 className="font-semibold mb-4 text-[#111111]">{section.title}</h4>
               <ul className="space-y-3">
                 {section.links.map((link) => (
-                  <li key={link.label}><a href={link.href} className="text-[#2C2C2C]/60 hover:text-[#6F832E] transition-colors">{link.label}</a></li>
+                  <li key={link.label}>
+                    {/* 3. onClick 이벤트 핸들러 추가 */}
+                    <a 
+                      href={link.href} 
+                      onClick={(e) => {
+                        if (link.href === '#about') {
+                          e.preventDefault();
+                          if (onGoToAbout) onGoToAbout();
+                        }
+                      }}
+                      className="text-[#2C2C2C]/60 hover:text-[#6F832E] transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
                 ))}
               </ul>
             </motion.div>
