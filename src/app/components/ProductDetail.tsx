@@ -16,10 +16,10 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
 
   const product = {
     id: 'bemot-sun-serum-50ml',
-    name: 'Bemot Moisturizing Sun Serum SPF 50',
-    price: 35,
+    name: language === 'ko' ? '비모트 수분 선 세럼 SPF 50' : 'Bemot Moisturizing Sun Serum SPF 50',
+    price: 29.99,
     volume: '50ml / 1.69 fl oz',
-    image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8c3Vuc2NyZWVuJTIwc2VydW0lMjBib3R0bGV8ZW58MHx8fHwxNzE5MDAwMDAwfDA&ixlib=rb-4.1.0&q=80&w=1080',
+    image: './sunserum_hero.png',
   };
 
   const handleBuyNow = () => {
@@ -66,6 +66,9 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
     { q: language === 'ko' ? '방수 기능이 있나요?' : 'Is this water-resistant?', a: language === 'ko' ? '40분간 중등도의 방수 기능이 있지만, 수영 후 재도포를 권장합니다.' : 'It offers moderate water resistance (40 minutes), but reapplication after swimming is recommended.' },
   ];
 
+  // 상세 이미지 배열
+  const detailImages = ['/pd1.png', '/pd2.png', '/pd3.png', '/pd4.png', '/pd5.png', '/pd6.png', '/pd7.png', '/pd8.png'];
+
   return (
     <div className="pt-20 bg-[#FAFAF8]">
       {/* Back Button */}
@@ -79,33 +82,33 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
       {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Product Image */}
           <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="relative">
-            <div className="rounded-3xl overflow-hidden bg-white border border-[#E6E6E0]">
-              <img src={product.image} alt={product.name} className="w-full h-[500px] object-cover" />
+            <div className="rounded-3xl overflow-hidden bg-white border border-[#E6E6E0] h-[500px] lg:h-[600px]">
+              <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
             </div>
           </motion.div>
 
-          {/* Product Info */}
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col space-y-6 h-[500px] lg:h-[600px]">
             <div>
-              <span className="inline-block px-3 py-1.5 bg-[#EEF2E0] text-[#6F832E] rounded-full text-sm font-semibold mb-3">SPF 50 PA++++</span>
+              <span className="inline-block px-3 py-1.5 bg-[#EEF2E0] text-[#6F832E] rounded-full text-sm font-semibold mb-3">NEW ARRIVAL</span>
               <h1 className="text-3xl md:text-4xl font-bold text-[#111111] mb-2">{product.name}</h1>
               <p className="text-[#2C2C2C]/60">{product.volume}</p>
             </div>
 
             <p className="text-lg text-[#2C2C2C]/70">
-              {language === 'ko' ? '가벼운 자외선 차단과 수분 공급으로 하루 종일 편안한 피부를 유지하세요.' : 'Lightweight sun protection that moisturizes and soothes for all-day comfort.'}
+              {language === 'ko' ? '차세대 베모트리지놀 UV 필터와 수분 플럼핑 액티브 성분이 결합된 SPF 50+ / PA+++ 보호막. 백탁 없이 하루 종일 피부를 방어하며 맑은 유리알 광채를 선사하는 세럼 질감의 포뮬러입니다.' : 'An SPF 50+ / PA+++ protective shield combining next-generation Bemotrizinol UV filters and moisture-plumping actives. No white cast, delivering a clear, glass-skin glow.'}
             </p>
 
             <div className="flex items-center gap-2">
               {[1,2,3,4,5].map(i => <Star key={i} size={20} className="text-[#A9C356] fill-[#A9C356]" />)}
-              <span className="text-sm text-[#2C2C2C]/60 ml-2">(4.8/5 · 2,341 {language === 'ko' ? '리뷰' : 'reviews'})</span>
+              <span className="text-sm text-[#2C2C2C]/60 ml-2">(4.5/5 · 241 {language === 'ko' ? '리뷰' : 'reviews'})</span>
             </div>
 
-            <div className="text-3xl font-bold text-[#6F832E]">${product.price}</div>
+            <div className="flex items-baseline gap-3 text-3xl font-bold">
+              <span className="text-[#EF4444]">${product.price.toFixed(2)}</span>
+              <span className="text-[#9CA3AF] line-through text-xl">$35</span>
+            </div>
 
-            {/* Quick Benefits */}
             <div className="grid grid-cols-2 gap-3">
               {['No White Cast', 'Oil-Free', 'Non-comedogenic', 'Cruelty-Free'].map((b) => (
                 <div key={b} className="flex items-center gap-2 text-sm text-[#6F832E]">
@@ -115,8 +118,7 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
               ))}
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex gap-4">
+            <div className="flex gap-4 mt-auto pt-2">
               <button onClick={handleBuyNow} className="flex-1 py-4 bg-[#A9C356] hover:bg-[#8FA93C] text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-[#A9C356]/30 transition-all duration-300 hover:scale-105 text-lg">
                 {language === 'ko' ? '지금 구매하기' : 'Buy Now'}
               </button>
@@ -125,8 +127,7 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
               </button>
             </div>
 
-            {/* Trust Signals */}
-            <div className="flex gap-6 text-sm text-[#2C2C2C]/60">
+            <div className="flex gap-6 text-sm text-[#2C2C2C]/60 pt-2">
               <span>{language === 'ko' ? '🚚 $50 이상 무료배송' : '🚚 Free shipping over $50'}</span>
               <span>{language === 'ko' ? '✅ 30일 환불 보장' : '✅ 30-day guarantee'}</span>
             </div>
@@ -150,17 +151,36 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
         </div>
       </section>
 
-      {/* Brand Story */}
+      {/* Brand Story & Detail Images */}
       <section className="bg-[#EEF2E0] py-20">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <img src="/klear-logo.png" alt="Klear" className="h-12 w-auto mx-auto mb-6 rounded-lg" />
-          <h2 className="text-3xl font-bold text-[#111111] mb-6">{language === 'ko' ? 'Klear의 철학' : 'The Klear Philosophy'}</h2>
-          <p className="text-[#2C2C2C]/70 leading-relaxed mb-4">
-            {language === 'ko' ? 'Klear는 효과적이고 편안한 스킨케어를 만들어 일상에 자연스럽게 녹아드는 제품을 추구합니다. 우리의 선 세럼은 기존 자외선 차단제의 불편함(백탁, 끈적임, 건조함)을 해결하기 위해 개발되었습니다.' : "Klear believes in creating effective, comfortable skincare that fits seamlessly into daily life. Our sun serum was developed to address common sunscreen complaints: white cast, greasiness, and dryness."}
-          </p>
-          <p className="text-[#2C2C2C]/70 leading-relaxed">
-            {language === 'ko' ? '실제 피부 고민을 가진 실제 사용자를 위해 설계되었으며, 매일의 착용감을 위해 테스트되었습니다.' : 'Designed for real people with real skin concerns, tested for daily wearability.'}
-          </p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-xl mx-auto aspect-video rounded-xl overflow-hidden shadow-lg border border-[#E6E6E0]/50 mb-20">
+            <iframe
+              width="100%"
+              height="100%"
+              src="https://www.youtube.com/embed/EngW7tLk6R8"
+              title="Klear Product Video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          {/* pd1 ~ pd6 Images */}
+          <div className="max-w-4xl mx-auto space-y-0 flex flex-col items-center">
+            {detailImages.map((img, idx) => (
+              <motion.img
+                key={idx}
+                src={`./${img}`}
+                alt={`Detail ${idx + 1}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="w-full h-auto object-contain"
+              />
+            ))}
+          </div>
         </div>
       </section>
 
@@ -183,7 +203,7 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
       {/* Product Specifications */}
       <section className="bg-[#FAFAF8] py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-[#111111] mb-12">{language === 'ko' ? '제품 상세' : 'Product Specifications'}</h2>
+          <h2 className="text-3xl font-bold text-center text-[#111111] mb-12">{language === 'ko' ? '상품 안내' : 'Product Information'}</h2>
           <div className="bg-white border border-[#E6E6E0] rounded-2xl overflow-hidden">
             {specs.map((spec, i) => (
               <div key={i} className={`flex justify-between px-6 py-4 ${i % 2 === 0 ? 'bg-white' : 'bg-[#FAFAF8]'}`}>
@@ -229,11 +249,6 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
           <button onClick={handleBuyNow} className="px-10 py-4 bg-[#A9C356] hover:bg-[#8FA93C] text-white rounded-full font-semibold text-lg hover:shadow-xl hover:shadow-[#A9C356]/30 transition-all duration-300 hover:scale-105">
             {language === 'ko' ? '지금 구매하기' : 'Shop Now'}
           </button>
-          <div className="flex justify-center gap-8 mt-6 text-sm text-[#2C2C2C]/60">
-            <span>{language === 'ko' ? '🚚 $50 이상 무료배송' : '🚚 Free shipping over $50'}</span>
-            <span>{language === 'ko' ? '✅ 30일 만족 보장' : '✅ 30-day satisfaction guarantee'}</span>
-            <span>{language === 'ko' ? '🔒 안전한 결제' : '🔒 Secure checkout'}</span>
-          </div>
         </div>
       </section>
     </div>

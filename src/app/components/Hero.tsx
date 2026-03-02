@@ -18,8 +18,8 @@ export function Hero({ onShopNow }: HeroProps) {
       id: 1,
       title: t('hero.title1'),
       subtitle: t('hero.subtitle1'),
-      description: 'Klear X Black Pink 스페셜 에디션 스킨케어 세트를 합리적인 가격에 만나고 전 세계가 주목하는 블랙핑크와 함께하는 가장 깨끗한 뷰티 루틴을 시작해보세요',
-      image: '/ｂｌａｃｋｐｉｎｋ.png',  
+      description: t('hero.desc1'),
+      image: '/blackpink_hero.png',
       badge: t('hero.badge1'),
     },
     {
@@ -27,7 +27,7 @@ export function Hero({ onShopNow }: HeroProps) {
       title: t('hero.title2'),
       subtitle: t('hero.subtitle2'),
       description: t('hero.desc2'),
-      image: 'https://images.unsplash.com/photo-1570194065650-d99fb4a38691?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8c2tpbmNhcmUlMjBzZXJ1bXxlbnwwfHx8fDE3MTkwMDAwMDB8MA&ixlib=rb-4.1.0&q=80&w=1080',
+      image: '/sunserum_hero.png',
       badge: t('hero.badge2'),
     },
   ];
@@ -97,7 +97,7 @@ export function Hero({ onShopNow }: HeroProps) {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <AnimatePresence initial={false} custom={direction} mode="wait">
+        <AnimatePresence initial={false} custom={direction} mode="popLayout">
           <motion.div
             key={currentSlide}
             custom={direction}
@@ -106,10 +106,10 @@ export function Hero({ onShopNow }: HeroProps) {
             animate="center"
             exit="exit"
             transition={{
-              x: { type: 'spring', stiffness: 300, damping: 30 },
-              opacity: { duration: 0.5 },
+              x: { type: 'spring', stiffness: 400, damping: 25 },
+              opacity: { duration: 0.3 },
             }}
-            className="grid lg:grid-cols-2 gap-12 items-center"
+            className="grid lg:grid-cols-2 gap-12 items-center w-full"
           >
             {/* Text Content */}
             <div className="space-y-8">
@@ -121,13 +121,13 @@ export function Hero({ onShopNow }: HeroProps) {
                 <span className="inline-block px-4 py-2 bg-[#EEF2E0] border border-[#A9C356]/30 rounded-full text-sm font-semibold mb-4 text-[#6F832E]">
                   {slides[currentSlide].badge}
                 </span>
-                <h2 className="text-sm uppercase tracking-widest text-[#8FA93C] mb-4">
+                <h2 className="text-sm uppercase tracking-widest text-[#8FA93C] mb-4 whitespace-pre-line">
                   {slides[currentSlide].subtitle}
                 </h2>
-                <h1 className="text-5xl md:text-7xl font-bold mb-6 text-[#111111] leading-tight">
+                <h1 className="text-5xl md:text-7xl font-bold mb-6 text-[#111111] leading-tight whitespace-pre-line">
                   {slides[currentSlide].title}
                 </h1>
-                <p className="text-xl text-[#2C2C2C]/70 leading-relaxed">
+                <p className="text-xl text-[#2C2C2C]/70 leading-relaxed whitespace-pre-line mb-8">
                   {slides[currentSlide].description}
                 </p>
               </motion.div>
@@ -179,7 +179,7 @@ export function Hero({ onShopNow }: HeroProps) {
                   src={slides[currentSlide].image}
                   alt={slides[currentSlide].title}
                   className="relative z-10 w-full h-[500px] object-cover rounded-2xl"
-                  fallbackSrc="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+                  fallbackSrc="/sunserum_hero.png"
                 />
 
                 <motion.div
@@ -201,45 +201,35 @@ export function Hero({ onShopNow }: HeroProps) {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6 }}
-                className="absolute -left-4 top-1/4 bg-white/90 backdrop-blur-md border border-[#A9C356]/30 rounded-2xl p-4 shadow-xl"
               >
-                <div className="text-3xl font-bold text-[#6F832E]">
-                  SPF 50
-                </div>
-                <div className="text-sm text-[#2C2C2C]/60">{t('hero.stat1')}</div>
               </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.8 }}
-                className="absolute -right-4 bottom-1/4 bg-white/90 backdrop-blur-md border border-[#A9C356]/30 rounded-2xl p-4 shadow-xl"
               >
-                <div className="text-3xl font-bold text-[#6F832E]">
-                  #1
-                </div>
-                <div className="text-sm text-[#2C2C2C]/60">{t('hero.stat2')}</div>
               </motion.div>
             </motion.div>
           </motion.div>
         </AnimatePresence>
+      </div>
 
-        {/* Navigation Arrows */}
-        <div className="absolute left-4 right-4 top-1/2 -translate-y-1/2 flex justify-between pointer-events-none">
+{/* Navigation Arrows (max-w-7xl 바깥으로 이동됨) */}
+        <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 w-full px-4 md:px-8 xl:px-16 flex justify-between pointer-events-none z-50">
           <button
             onClick={prevSlide}
-            className="pointer-events-auto p-3 bg-white/80 backdrop-blur-sm border border-[#E6E6E0] rounded-full hover:bg-[#EEF2E0] transition-all duration-300 hover:scale-110 text-[#2C2C2C]"
+            className="pointer-events-auto flex items-center justify-center w-12 h-12 bg-white/90 backdrop-blur-md border border-[#E6E6E0] rounded-full shadow-md text-[#111111] hover:bg-white hover:scale-110 transition-all duration-300 cursor-pointer"
           >
             <ChevronLeft size={24} />
           </button>
           <button
             onClick={nextSlide}
-            className="pointer-events-auto p-3 bg-white/80 backdrop-blur-sm border border-[#E6E6E0] rounded-full hover:bg-[#EEF2E0] transition-all duration-300 hover:scale-110 text-[#2C2C2C]"
+            className="pointer-events-auto flex items-center justify-center w-12 h-12 bg-white/90 backdrop-blur-md border border-[#E6E6E0] rounded-full shadow-md text-[#111111] hover:bg-white hover:scale-110 transition-all duration-300 cursor-pointer"
           >
             <ChevronRight size={24} />
           </button>
         </div>
-      </div>
-    </section>
+      </section>
   );
 }

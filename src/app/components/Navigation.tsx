@@ -14,9 +14,10 @@ interface NavigationProps {
   onGoToAccount?: () => void;
   onGoHome?: () => void;
   onGoToProducts?: () => void;
+  onGoToAbout?: () => void;
 }
 
-export function Navigation({ menuOpen, setMenuOpen, onSearchOpen, onCartOpen, onAuthOpen, onGoToAccount, onGoHome, onGoToProducts }: NavigationProps) {
+export function Navigation({ menuOpen, setMenuOpen, onSearchOpen, onCartOpen, onAuthOpen, onGoToAccount, onGoHome, onGoToProducts, onGoToAbout }: NavigationProps) {
   const [scrolled, setScrolled] = useState(false);
   const { language, setLanguage, t } = useLanguage();
   const { totalItems } = useCart();
@@ -33,6 +34,7 @@ export function Navigation({ menuOpen, setMenuOpen, onSearchOpen, onCartOpen, on
   const menuItems = [
     { label: t('nav.home'), href: '#home' },
     { label: t('nav.products'), href: '#products' },
+    { label: t('nav.about'), href: '#about' },
   ];
 
   const toggleLanguage = () => {
@@ -55,8 +57,7 @@ export function Navigation({ menuOpen, setMenuOpen, onSearchOpen, onCartOpen, on
               className="cursor-pointer flex items-center gap-2"
               onClick={onGoHome}
             >
-              <img src="/klear-logo.png" alt="Klear" className="h-10 w-auto rounded-lg" />
-              <span className="text-2xl font-bold text-[#6F832E]">Klear</span>
+              <img src="/klear-logo-header.png" alt="Klear" className="h-10 w-auto rounded-lg" />
             </motion.div>
 
             {/* Desktop Menu */}
@@ -65,17 +66,17 @@ export function Navigation({ menuOpen, setMenuOpen, onSearchOpen, onCartOpen, on
                 <motion.a
                   key={item.label}
                   href={item.href}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
                   onClick={(e) => {
-                    e.preventDefault();
-                    if (item.href === '#home') {
-                      if (onGoHome) onGoHome();
-                    } else if (item.href === '#products') {
-                      if (onGoToProducts) onGoToProducts();
-                    }
-                  }}
+                        e.preventDefault();
+                        if (item.href === '#home') {
+                          if (onGoHome) onGoHome();
+                        } else if (item.href === '#products') {
+                          if (onGoToProducts) onGoToProducts();
+                        } else if (item.href === '#about') {
+                          if (onGoToAbout) onGoToAbout(); // About 페이지 전환 실행
+                        }
+                        if (setMenuOpen) setMenuOpen(false); // 모바일 메뉴 닫기 대응
+                      }}
                   className="text-[#2C2C2C] hover:text-[#6F832E] transition-colors relative group px-3 py-2"
                 >
                   {item.label}
@@ -215,6 +216,8 @@ export function Navigation({ menuOpen, setMenuOpen, onSearchOpen, onCartOpen, on
                         if (onGoHome) onGoHome();
                       } else if (item.href === '#products') {
                         if (onGoToProducts) onGoToProducts();
+                      } else if (item.href === '#about') {
+                        if (onGoToAbout) onGoToAbout();
                       }
                     }}
                     className="block text-2xl text-[#2C2C2C] hover:text-[#6F832E] transition-colors hover:translate-x-2 transform duration-300"

@@ -17,8 +17,9 @@ import { ProductDetail } from './components/ProductDetail';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { CartProvider } from './contexts/CartContext';
 import { AuthProvider } from './contexts/AuthContext';
+import { About } from './components/About';
 
-type PageView = 'home' | 'checkout' | 'account' | 'productDetail';
+type PageView = 'home' | 'checkout' | 'account' | 'productDetail' | 'about';
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -74,6 +75,11 @@ export default function App() {
     setCurrentPage('checkout');
   };
 
+  const handleGoToAbout = () => {
+  setCurrentPage('about');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   if (currentPage === 'checkout') {
     return (
       <AuthProvider>
@@ -114,8 +120,40 @@ export default function App() {
                 onGoToAccount={handleGoToAccount}
                 onGoHome={handleGoHome}
                 onGoToProducts={handleGoToProducts}
+                onGoToAbout={handleGoToAbout}
               />
               <ProductDetail onBuyNow={handleBuyNow} onBack={handleGoHome} />
+              <Footer />
+              <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
+              <SearchDialog isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+              <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} onGoToAccount={handleGoToAccount} />
+              <Chatbot />
+            </div>
+          </LanguageProvider>
+        </CartProvider>
+      </AuthProvider>
+    );
+  }
+
+  if (currentPage === 'about') {
+    return (
+      <AuthProvider>
+        <CartProvider>
+          <LanguageProvider>
+            <div className="relative min-h-screen bg-[#FAFAF8] text-[#2C2C2C] overflow-x-hidden">
+              <Toaster position="top-center" richColors />
+              <Navigation
+                menuOpen={menuOpen}
+                setMenuOpen={setMenuOpen}
+                onSearchOpen={() => setSearchOpen(true)}
+                onCartOpen={() => setCartOpen(true)}
+                onAuthOpen={() => setAuthOpen(true)}
+                onGoToAccount={handleGoToAccount}
+                onGoHome={handleGoHome}
+                onGoToProducts={handleGoToProducts}
+                onGoToAbout={handleGoToAbout} // Props 전달 필요 시
+              />
+              <About onBack={handleGoHome} onShopNow={handleGoToProductDetail} />
               <Footer />
               <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
               <SearchDialog isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
@@ -144,7 +182,8 @@ export default function App() {
               onAuthOpen={() => setAuthOpen(true)}
               onGoToAccount={handleGoToAccount}
               onGoHome={handleGoHome}
-                onGoToProducts={handleGoToProducts}
+              onGoToProducts={handleGoToProducts}
+              onGoToAbout={handleGoToAbout}
             />
 
             {/* Main Content */}
