@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { motion } from 'motion/react';
-import { ArrowLeft, Sun, Droplets, Shield, Heart, ChevronDown, ChevronUp, Plus, Check, Star } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ArrowLeft, Sun, Droplets, Shield, Heart, ChevronDown, ChevronUp, Plus, Check, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useCart } from '../contexts/CartContext';
 
@@ -13,22 +13,43 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
   const { language } = useLanguage();
   const { addToCart } = useCart();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  
+  // 1. 이미지 슬라이더 상태 및 데이터 추가
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const heroImages = [
+    './sunserum_hero.png', // 기존 이미지
+    '/pd_2.png',
+    '/pd_3.png',
+    '/pd_4.png',
+    '/pd_5.png',
+    '/pd_6.png',
+    '/pd_7.png',
+    '/pd_8.png',
+  ];
 
   const product = {
     id: 'bemot-sun-serum-50ml',
     name: language === 'ko' ? '비모트 수분 선 세럼 SPF 50' : 'Bemot Moisturizing Sun Serum SPF 50',
     price: 29.99,
     volume: '50ml / 1.69 fl oz',
-    image: './sunserum_hero.png',
+  };
+
+  // 2. 슬라이더 제어 함수
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev === 0 ? heroImages.length - 1 : prev - 1));
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev === heroImages.length - 1 ? 0 : prev + 1));
   };
 
   const handleBuyNow = () => {
-    addToCart({ id: product.id, name: product.name, price: product.price, image: product.image });
+    addToCart({ id: product.id, name: product.name, price: product.price, image: heroImages[0] });
     onBuyNow();
   };
 
   const handleAddToCart = () => {
-    addToCart({ id: product.id, name: product.name, price: product.price, image: product.image });
+    addToCart({ id: product.id, name: product.name, price: product.price, image: heroImages[0] });
   };
 
   const benefits = [
@@ -67,11 +88,10 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
   ];
 
   // 상세 이미지 배열
-  const detailImages = ['/pd1.png', '/pd2.png', '/pd3.png', '/pd4.png', '/pd5.png', '/pd6.png', '/pd7.png', '/pd8.png'];
+  const detailImages = ['/pd_1.png', '/pd_2.png', '/pd_3.png', '/pd_4.png', '/pd_5.png', '/pd_6.png', '/pd_7.png', '/pd_8.png', '/pd_9.png'];
 
-  return (
+return (
     <div className="pt-20 bg-[#FAFAF8]">
-      {/* Back Button */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <button onClick={onBack} className="flex items-center gap-2 text-[#2C2C2C]/60 hover:text-[#6F832E] transition-colors">
           <ArrowLeft size={20} />
@@ -79,12 +99,47 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
         </button>
       </div>
 
-      {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="relative">
-            <div className="rounded-3xl overflow-hidden bg-white border border-[#E6E6E0] h-[500px] lg:h-[600px]">
-              <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+          {/* 3. 이미지 슬라이더 UI 수정 */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="relative group">
+            <div className="rounded-3xl overflow-hidden bg-white border border-[#E6E6E0] h-[500px] lg:h-[600px] relative">
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={currentIndex}
+                  src={heroImages[currentIndex]}
+                  alt={`${product.name} ${currentIndex + 1}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full h-full object-cover"
+                />
+              </AnimatePresence>
+
+              {/* 화살표 버튼 */}
+              <button 
+                onClick={prevSlide}
+                className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 border border-[#E6E6E0] text-[#111111] hover:bg-white transition-all opacity-0 group-hover:opacity-100"
+              >
+                <ChevronLeft size={24} />
+              </button>
+              <button 
+                onClick={nextSlide}
+                className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 border border-[#E6E6E0] text-[#111111] hover:bg-white transition-all opacity-0 group-hover:opacity-100"
+              >
+                <ChevronRight size={24} />
+              </button>
+
+              {/* 페이지 인디케이터 (선택 사항) */}
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                {heroImages.map((_, i) => (
+                  <div 
+                    key={i} 
+                    className={`w-2 h-2 rounded-full transition-all ${i === currentIndex ? 'bg-[#A9C356] w-6' : 'bg-[#111111]/20'}`}
+                  />
+                ))}
+              </div>
             </div>
           </motion.div>
 

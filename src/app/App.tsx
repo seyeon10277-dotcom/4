@@ -123,7 +123,7 @@ export default function App() {
                 onGoToAbout={handleGoToAbout}
               />
               <ProductDetail onBuyNow={handleBuyNow} onBack={handleGoHome} />
-              <Footer />
+              <Footer onGoToAbout={handleGoToAbout} />
               <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
               <SearchDialog isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
               <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} onGoToAccount={handleGoToAccount} />
@@ -154,7 +154,7 @@ export default function App() {
                 onGoToAbout={handleGoToAbout} // Props 전달 필요 시
               />
               <About onBack={handleGoHome} onShopNow={handleGoToProductDetail} />
-              <Footer />
+              <Footer onGoToAbout={handleGoToAbout} />
               <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
               <SearchDialog isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
               <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} onGoToAccount={handleGoToAccount} />
@@ -195,7 +195,7 @@ export default function App() {
             </main>
 
             {/* Footer */}
-            <Footer />
+            <Footer onGoToAbout={handleGoToAbout} />
 
             {/* Modals & Dialogs */}
             <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
