@@ -7,33 +7,38 @@ import { TechFeatures } from './components/TechFeatures';
 import { BrandStory } from './components/BrandStory';
 import { Footer } from './components/Footer';
 import { Cart } from './components/Cart';
-import { SearchDialog } from './components/SearchDialog';
 import { Chatbot } from './components/Chatbot';
 import { AuthModal } from './components/AuthModal';
 import { CheckoutPage } from './components/CheckoutPage';
 import { CouponPopup } from './components/CouponPopup';
 import { AccountPage } from './components/AccountPage';
 import { ProductDetail } from './components/ProductDetail';
+import { ProductDetail_2 } from './components/ProductDetail_2';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { CartProvider } from './contexts/CartContext';
 import { AuthProvider } from './contexts/AuthContext';
+import { About } from './components/About';
+import { TermsPage } from './components/TermsPage';
+import { PrivacyPage } from './components/PrivacyPage';
 
-type PageView = 'home' | 'checkout' | 'account' | 'productDetail';
+
+type PageView = 'home' | 'checkout' | 'account' | 'productDetail' | 'about' | 'terms' | 'privacy';
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
+  const [chatbotOpen, setChatbotOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<PageView>('home');
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (menuOpen || cartOpen || searchOpen || authOpen) {
+    if (menuOpen || cartOpen || authOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-  }, [menuOpen, cartOpen, searchOpen, authOpen]);
+  }, [menuOpen, cartOpen, authOpen]);
 
   const handleCheckout = () => {
     setCartOpen(false);
@@ -48,13 +53,23 @@ export default function App() {
     setCurrentPage('account');
   };
 
-  const handleGoToProductDetail = () => {
+  const handleGoToProductDetail = (productId?: number | string) => {
+    if (productId) {
+      setSelectedProductId(productId.toString());
+    } else {
+      setSelectedProductId('blackpink-special-edition');
+    }
     setCurrentPage('productDetail');
   };
 
   const handleGoHome = () => {
     setCurrentPage('home');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleProductClick = (productId: string) => {
+    setSelectedProductId(productId);
+    setCurrentPage('productDetail');
   };
 
   const handleGoToProducts = () => {
@@ -72,6 +87,25 @@ export default function App() {
 
   const handleBuyNow = () => {
     setCurrentPage('checkout');
+  };
+
+  const handleGoToAbout = () => {
+    setCurrentPage('about');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleGoToTerms = () => {
+    setCurrentPage('terms');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleGoToPrivacy = () => {
+    setCurrentPage('privacy');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleOpenChatbot = () => {
+    setChatbotOpen(true);
   };
 
   if (currentPage === 'checkout') {
@@ -108,19 +142,87 @@ export default function App() {
               <Navigation
                 menuOpen={menuOpen}
                 setMenuOpen={setMenuOpen}
-                onSearchOpen={() => setSearchOpen(true)}
+                onGoHome={handleGoHome}
+                onCartOpen={() => setCartOpen(true)}
+                onAuthOpen={() => setAuthOpen(true)}
+                onGoToAccount={handleGoToAccount}
+                onGoToProducts={handleGoToProducts}
+                onGoToAbout={handleGoToAbout}
+              />
+              {selectedProductId === 'blackpink-special-edition' ? (
+                <ProductDetail_2 onBuyNow={handleBuyNow} onBack={handleGoHome} />
+              ) : (
+                <ProductDetail onBuyNow={handleBuyNow} onBack={handleGoHome} />
+              )}
+              <Footer
+                onGoToAbout={handleGoToAbout}
+                onProductClick={handleProductClick}
+                onGoToTerms={handleGoToTerms}
+                onGoToPrivacy={handleGoToPrivacy}
+                onOpenChatbot={handleOpenChatbot}
+              />
+              <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
+              <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} onGoToAccount={handleGoToAccount} />
+              <Chatbot externalOpen={chatbotOpen} onExternalOpenHandled={() => setChatbotOpen(false)} />
+            </div>
+          </LanguageProvider>
+        </CartProvider>
+      </AuthProvider>
+    );
+  }
+
+  if (currentPage === 'terms') {
+    return (
+      <AuthProvider>
+        <CartProvider>
+          <LanguageProvider>
+            <TermsPage onBack={handleGoHome} />
+          </LanguageProvider>
+        </CartProvider>
+      </AuthProvider>
+    );
+  }
+
+  if (currentPage === 'privacy') {
+    return (
+      <AuthProvider>
+        <CartProvider>
+          <LanguageProvider>
+            <PrivacyPage onBack={handleGoHome} />
+          </LanguageProvider>
+        </CartProvider>
+      </AuthProvider>
+    );
+  }
+
+  if (currentPage === 'about') {
+    return (
+      <AuthProvider>
+        <CartProvider>
+          <LanguageProvider>
+            <div className="relative min-h-screen bg-[#FAFAF8] text-[#2C2C2C] overflow-x-hidden">
+              <Toaster position="top-center" richColors />
+              <Navigation
+                menuOpen={menuOpen}
+                setMenuOpen={setMenuOpen}
                 onCartOpen={() => setCartOpen(true)}
                 onAuthOpen={() => setAuthOpen(true)}
                 onGoToAccount={handleGoToAccount}
                 onGoHome={handleGoHome}
                 onGoToProducts={handleGoToProducts}
+                onGoToAbout={handleGoToAbout}
               />
-              <ProductDetail onBuyNow={handleBuyNow} onBack={handleGoHome} />
-              <Footer />
+              <About onBack={handleGoHome} onShopNow={handleGoToProductDetail} />
+              <Footer
+                onGoToAbout={handleGoToAbout}
+                onProductClick={handleProductClick}
+                onGoToTerms={handleGoToTerms}
+                onGoToPrivacy={handleGoToPrivacy}
+                onOpenChatbot={handleOpenChatbot}
+              />
               <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
-              <SearchDialog isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
               <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} onGoToAccount={handleGoToAccount} />
-              <Chatbot />
+              <Chatbot externalOpen={chatbotOpen} onExternalOpenHandled={() => setChatbotOpen(false)} />
             </div>
           </LanguageProvider>
         </CartProvider>
@@ -135,38 +237,35 @@ export default function App() {
           <div className="relative min-h-screen bg-[#FAFAF8] text-[#2C2C2C] overflow-x-hidden">
             <Toaster position="top-center" richColors />
 
-            {/* Navigation */}
             <Navigation
               menuOpen={menuOpen}
               setMenuOpen={setMenuOpen}
-              onSearchOpen={() => setSearchOpen(true)}
               onCartOpen={() => setCartOpen(true)}
               onAuthOpen={() => setAuthOpen(true)}
               onGoToAccount={handleGoToAccount}
               onGoHome={handleGoHome}
-                onGoToProducts={handleGoToProducts}
+              onGoToProducts={handleGoToProducts}
+              onGoToAbout={handleGoToAbout}
             />
 
-            {/* Main Content */}
             <main className="relative z-10">
               <Hero onShopNow={handleGoToProductDetail} />
-              <ProductShowcase onBuyNow={handleBuyNow} />
+              <ProductShowcase onBuyNow={handleBuyNow} onProductClick={handleProductClick} />
               <TechFeatures onBuyNow={() => setCurrentPage('checkout')} />
               <BrandStory />
             </main>
 
-            {/* Footer */}
-            <Footer />
+            <Footer
+              onGoToAbout={handleGoToAbout}
+              onProductClick={handleProductClick}
+              onGoToTerms={handleGoToTerms}
+                onGoToPrivacy={handleGoToPrivacy}
+              onOpenChatbot={handleOpenChatbot}
+            />
 
-            {/* Modals & Dialogs */}
             <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
-            <SearchDialog isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
             <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} onGoToAccount={handleGoToAccount} />
-
-            {/* Chatbot */}
-            <Chatbot />
-
-            {/* Coupon Popup Ad */}
+            <Chatbot externalOpen={chatbotOpen} onExternalOpenHandled={() => setChatbotOpen(false)} />
             <CouponPopup onOpenAuth={() => setAuthOpen(true)} />
           </div>
         </LanguageProvider>

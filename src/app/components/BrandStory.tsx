@@ -1,84 +1,133 @@
 import { motion } from 'motion/react';
-import { Globe, Target, TrendingUp, Users } from 'lucide-react';
-import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/LanguageContext';
+
+// 1. 번역 함수(t)를 주입받아 번역된 배열을 반환하도록 수정
+const getReviews = (t: any) => [
+  {
+    name: t('Jane Cooper'),
+    title: t('Fabulous!'),
+    text: t('Lightweight and hydrating — it feels more like a serum than sunscreen. My skin stays soft, calm, and comfortable all day.'),
+    avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
+    stars: 5,
+  },
+  {
+    name: t('Kathryn Murphy'),
+    title: t('No Joke, So Gentle.'),
+    text: t('My skin gets irritated easily, but this product feels very gentle and calming. It reduced redness overnight and didn\'t cause any breakouts. Perfect for sensitive skin.'),
+    avatar: 'https://randomuser.me/api/portraits/women/65.jpg',
+    stars: 5,
+  },
+  {
+    name: t('Savannah Nguyen'),
+    title: t('Glow Hits Different.'),
+    text: t('The glow this gives is beautiful but natural — not greasy at all. It absorbs quickly and leaves my skin looking healthy and fresh. Great for everyday use.'),
+    avatar: 'https://randomuser.me/api/portraits/women/33.jpg',
+    stars: 5,
+  },
+  {
+    name: t('Eleanor Pena'),
+    title: t('Obsessed!!'),
+    text: t('Super gentle on my skin and easy to wear every day. It layers perfectly under makeup without pilling.'),
+    avatar: 'https://randomuser.me/api/portraits/women/21.jpg',
+    stars: 5,
+  },
+  {
+    name: t('Theresa Webb'),
+    title: t('Literally So Good.'),
+    text: t('This cleanser removes sunscreen and makeup residue really well without drying my skin. The oil is soft and creamy, and my face feels clean but balanced afterwards.'),
+    avatar: 'https://randomuser.me/api/portraits/women/17.jpg',
+    stars: 5,
+  },
+];
+
+function StarRating({ count }: { count: number }) {
+  return (
+    <div className="flex gap-1 justify-center my-3">
+      {Array.from({ length: count }).map((_, i) => (
+        <svg key={i} className="w-5 h-5 text-yellow-400 fill-yellow-400" viewBox="0 0 20 20">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+      ))}
+    </div>
+  );
+}
+
+function ReviewCard({ review }: { review: ReturnType<typeof getReviews>[0] }) {
+  return (
+    <div className="flex-shrink-0 w-[280px] md:w-[320px] self-stretch bg-white rounded-2xl shadow-md border border-[#F0F0EC] p-6 mx-3 flex flex-col items-center text-center">
+      <img
+        src={review.avatar}
+        alt={review.name}
+        className="w-16 h-16 rounded-full object-cover border-2 border-[#EEF2E0]"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(review.name)}&background=A9C356&color=fff`;
+        }}
+      />
+      <StarRating count={review.stars} />
+      
+      <p className="text-sm text-[#111111] leading-relaxed mb-4">
+        <span className="font-semibold">{review.title}</span>
+        <br />
+        {review.text}
+      </p>
+      
+      <p className="mt-auto text-sm font-bold text-[#111111]">{review.name}</p>
+    </div>
+  );
+}
 
 export function BrandStory() {
   const { t } = useLanguage();
 
-  const milestones = [
-    { year: '2015', title: t('story.milestone1.title'), description: t('story.milestone1.desc') },
-    { year: '2018', title: t('story.milestone2.title'), description: t('story.milestone2.desc') },
-    { year: '2021', title: t('story.milestone3.title'), description: t('story.milestone3.desc') },
-    { year: '2026', title: t('story.milestone4.title'), description: t('story.milestone4.desc') },
-  ];
+  // 2. 번역이 적용된 리뷰 리스트 생성
+  const reviewList = getReviews(t);
 
-  const values = [
-    { icon: Globe, title: t('story.value1.title'), description: t('story.value1.desc') },
-    { icon: Target, title: t('story.value2.title'), description: t('story.value2.desc') },
-    { icon: TrendingUp, title: t('story.value3.title'), description: t('story.value3.desc') },
-    { icon: Users, title: t('story.value4.title'), description: t('story.value4.desc') },
-  ];
+  // Duplicate for seamless infinite loop
+  const doubled = [...reviewList, ...reviewList, ...reviewList];
 
   return (
-    <section id="story" className="relative py-32 overflow-hidden bg-white">
+    <section id="story" className="relative py-24 overflow-hidden bg-white">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-20">
-          <span className="inline-block px-4 py-2 bg-[#EEF2E0] border border-[#A9C356]/30 rounded-full text-sm font-semibold mb-4 text-[#6F832E]">{t('story.badge')}</span>
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 text-[#111111]">{t('story.title')}</h2>
-          <p className="text-xl text-[#2C2C2C]/60 max-w-3xl mx-auto">{t('story.subtitle')}</p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-14"
+        >
+          {/* 3. 정적 텍스트 번역 래핑 */}
+          <span className="inline-block px-4 py-2 bg-[#EEF2E0] border border-[#A9C356]/30 rounded-full text-sm font-semibold mb-4 text-[#6F832E]">
+            {t('제품리뷰')}
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-[#111111]">
+            {t('실제 사용자들의 생생한 리뷰')}
+          </h2>
         </motion.div>
+      </div>
 
-        {/* Story Content */}
-        <div className="grid lg:grid-cols-2 gap-16 mb-24 items-center">
-          <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="relative">
-            <div className="relative rounded-3xl overflow-hidden">
-              <ImageWithFallback
-                src="https://images.unsplash.com/photo-1722407348192-a44ce83704da?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxLb3JlYW4lMjBza2luY2FyZSUyMGxhYm9yYXRvcnklMjBzY2llbmNlfGVufDF8fHx8MTc3MTk4OTE5Mnww&ixlib=rb-4.1.0&q=80&w=1080"
-                alt="Klear Innovation Lab"
-                className="w-full h-[600px] object-cover"
-                fallbackSrc="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-              />
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#A9C356]/20 via-transparent to-transparent" />
-            </div>
-            <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.3, duration: 0.5 }} className="absolute -bottom-6 -right-6 bg-[#A9C356] rounded-2xl p-6 shadow-2xl text-white">
-              <div className="text-4xl font-bold">11+</div>
-              <div className="text-sm">{t('story.years')}</div>
-            </motion.div>
-          </motion.div>
+      <div className="relative w-full py-6" style={{ overflowX: 'hidden', overflowY: 'visible' }}>
+        <div className="pointer-events-none absolute left-0 top-0 h-full w-24 z-10 bg-gradient-to-r from-white to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-24 z-10 bg-gradient-to-l from-white to-transparent" />
 
-          <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="space-y-8">
-            {milestones.map((milestone, index) => (
-              <motion.div key={milestone.year} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.15, duration: 0.5 }} className="flex gap-6 group">
-                <div className="flex-shrink-0">
-                  <div className="w-20 h-20 bg-[#A9C356] rounded-2xl flex items-center justify-center font-bold text-lg text-white group-hover:scale-110 transition-transform duration-300">{milestone.year}</div>
-                </div>
-                <div className="flex-1 bg-white border border-[#E6E6E0] rounded-2xl p-6 group-hover:bg-[#EEF2E0] group-hover:border-[#A9C356]/30 transition-all duration-300">
-                  <h3 className="text-xl font-bold mb-2 text-[#111111]">{milestone.title}</h3>
-                  <p className="text-[#2C2C2C]/60">{milestone.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* Values Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {values.map((value, index) => (
-            <motion.div key={value.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1, duration: 0.5 }} className="group relative">
-              <div className="relative h-full bg-white border border-[#E6E6E0] rounded-2xl p-8 hover:bg-[#EEF2E0] hover:border-[#A9C356]/30 transition-all duration-300">
-                <motion.div whileHover={{ rotate: 360 }} transition={{ duration: 0.6 }} className="inline-flex p-4 bg-[#EEF2E0] rounded-xl mb-4">
-                  <value.icon className="w-6 h-6 text-[#6F832E]" />
-                </motion.div>
-                <h3 className="text-lg font-bold mb-2 text-[#111111]">{value.title}</h3>
-                <p className="text-sm text-[#2C2C2C]/60">{value.description}</p>
-                <div className="absolute bottom-0 left-0 w-0 h-1 bg-[#A9C356] group-hover:w-full transition-all duration-500" />
-              </div>
-            </motion.div>
+        <div
+          className="flex items-stretch"
+          style={{
+            animation: 'marquee 35s linear infinite',
+            width: 'max-content',
+          }}
+        >
+          {doubled.map((review, i) => (
+            <ReviewCard key={i} review={review} />
           ))}
         </div>
       </div>
+
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(calc(-100% / 3)); }
+        }
+      `}</style>
     </section>
   );
 }

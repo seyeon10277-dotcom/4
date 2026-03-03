@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, Sun, Droplets, Shield, Heart, ChevronDown, ChevronUp, Plus, Check, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Sun, Droplets, Shield, Heart, ChevronDown, ChevronUp, Plus, Check, Star, ChevronLeft, ChevronRight, Cloud, Sparkles } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useCart } from '../contexts/CartContext';
 
@@ -9,7 +9,7 @@ interface ProductDetailProps {
   onBack: () => void;
 }
 
-export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
+export function ProductDetail_2({ onBuyNow, onBack }: ProductDetailProps) {
   const { language } = useLanguage();
   const { addToCart } = useCart();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -20,20 +20,19 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
   // 1. 이미지 슬라이더 상태 및 데이터 추가
   const [currentIndex, setCurrentIndex] = useState(0);
   const heroImages = [
-    './sunserum_hero.png', // 기존 이미지
-    '/pd_2.png',
-    '/pd_3.png',
-    '/pd_4.png',
-    '/pd_5.png',
-    '/pd_6.png',
-    '/pd_7.png',
-    '/pd_8.png',
+    './blackpink_productshow.png', // 기존 이미지
+    '/pd2_2.png',
+    '/pd2_3.png',
+    '/pd2_4.png',
+    '/pd2_5.png',
+    '/pd2_6.png',
   ];
 
   const product = {
-    id: 'bemot-sun-serum-50ml',
-    name: language === 'ko' ? '비모트 수분 선 세럼 SPF 50' : 'Bemot Moisturizing Sun Serum SPF 50',
-    price: 29.99,
+    id: 'blackpink-special-edition', // ❌ 기존 'bemot-sun-serum-50ml'에서 반드시 변경
+    name: language === 'ko' ? '배리어 리페어 수분 세트' : 'Barrier Repair & Hydration Set',
+    price: 59.99,
+    originalPrice: 67.00,
     volume: '50ml / 1.69 fl oz',
   };
 
@@ -56,42 +55,40 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
   };
 
   const benefits = [
-    { icon: Sun, title: language === 'ko' ? '이중 보호' : 'Dual Protection', desc: language === 'ko' ? 'UV 차단과 깊은 수분 공급을 동시에' : 'Combines UV defense with deep hydration' },
-    { icon: Droplets, title: language === 'ko' ? '가벼운 세럼 텍스처' : 'Lightweight Serum Texture', desc: language === 'ko' ? '끈적임 없이 빠르게 흡수, 메이크업 베이스로 완벽' : 'Non-greasy, absorbs quickly, perfect under makeup' },
-    { icon: Shield, title: language === 'ko' ? '진정 & 카밍' : 'Soothing & Calming', desc: language === 'ko' ? '홍조와 자극을 줄여주는 성분 함유' : 'Contains ingredients that reduce redness and irritation' },
-    { icon: Heart, title: language === 'ko' ? '오래가는 수분' : 'Long-Lasting Moisture', desc: language === 'ko' ? '무겁지 않게 하루 종일 피부 수분 유지' : 'Keeps skin hydrated throughout the day' },
+    { icon: Cloud, title: language === 'ko' ? '구름 같은 텍스처' : 'Cloud-like Texture', desc: language === 'ko' ? '달팽이 점액을 휘핑 기법으로 배합하여 끈적임 없이 즉각 흡수' : 'Whipped snail mucin formula that absorbs instantly without stickiness' },
+    { icon: Shield, title: language === 'ko' ? '강력한 장벽 복구' : 'Ultimate Barrier Repair', desc: language === 'ko' ? '세라마이드와 판테놀이 스킨 사이클링 후 자극받은 피부 진정' : 'Ceramides and Panthenol soothe irritated skin after skin cycling' },
+    { icon: Sparkles, title: language === 'ko' ? '유리알 피부 광채' : 'Glass Skin Finish', desc: language === 'ko' ? '풍부한 수분감으로 투명하고 매끄러운 피부결 연출' : 'Provides deep hydration for a transparent, smooth, glass skin complexion' },
+    { icon: Droplets, title: language === 'ko' ? '3중 딥 레이어 보습' : 'Deep Layer Hydration', desc: language === 'ko' ? '히알루론산이 피부 깊숙이 수분을 공급하고 하루 종일 유지' : 'Hyaluronic Acid deeply hydrates and retains moisture all day' },
   ];
 
   const howToUse = [
-    { step: 1, title: language === 'ko' ? '클렌징 & 준비' : 'Cleanse & Prep', desc: language === 'ko' ? '아침 스킨케어 루틴 후, 메이크업 전 마지막 단계로 사용하세요.' : 'Apply after your morning skincare routine, as the last step before makeup.' },
-    { step: 2, title: language === 'ko' ? '적정량 사용' : 'Right Amount', desc: language === 'ko' ? '2-3 펌프(약 동전 크기)를 덜어주세요.' : 'Dispense 2-3 pumps (approximately a nickel-sized amount).' },
-    { step: 3, title: language === 'ko' ? '골고루 도포' : 'Even Application', desc: language === 'ko' ? '얼굴과 목에 가볍게 두드리며 골고루 펴 발라주세요.' : 'Gently pat and spread evenly across face and neck.' },
-    { step: 4, title: language === 'ko' ? '재도포' : 'Reapply', desc: language === 'ko' ? '야외 활동 시 2시간마다, 수영/발한 후 재도포하세요.' : 'Reapply every 2 hours when outdoors, or after swimming/sweating.' },
+    { step: 1, title: language === 'ko' ? '클렌징 및 톤' : 'Cleanse & Tone', desc: language === 'ko' ? '세안 후 토너로 피부결을 정돈하세요.' : 'After cleansing, prep your skin with a toner.' },
+    { step: 2, title: language === 'ko' ? '적정량 덜기' : 'Dispense', desc: language === 'ko' ? '동전 크기만큼 덜어 구름 같은 휘핑 제형을 확인하세요.' : 'Dispense a nickel-sized amount to reveal the whipped cloud texture.' },
+    { step: 3, title: language === 'ko' ? '도포 및 흡수' : 'Apply & Pat', desc: language === 'ko' ? '얼굴 전체에 펴 발라 부드럽게 두드리며 달팽이 점액 성분을 흡수시킵니다.' : 'Spread evenly and gently pat to help the snail mucin absorb.' },
+    { step: 4, title: language === 'ko' ? '스킨 사이클링 레이어링' : 'Skin Cycling Layering', desc: language === 'ko' ? '레티놀이나 산성 성분 사용 후, 자극받은 피부 위에 듬뿍 올려 보호막을 형성하세요.' : 'Apply generously over irritated skin to form a protective barrier after using retinol or acids.' },
   ];
 
   const specs = [
-    { label: 'SPF', value: 'SPF 50 PA++++' },
-    { label: language === 'ko' ? '제품 유형' : 'Type', value: language === 'ko' ? '가벼운 세럼형 선크림' : 'Lightweight serum-type sun protection' },
+    { label: language === 'ko' ? '제품 유형' : 'Type', value: language === 'ko' ? '배리어 클라우드 크림, 스네일 뮤신 & 세라마이드 에센스' : 'Barrier Cloud Moisturizing Cream, Snail Mucin & Ceramide Barrier Essence' },
+    { label: language === 'ko' ? '주요 성분' : 'Key Ingredients', value: language === 'ko' ? '달팽이 점액, 세라마이드, 판테놀, 히알루론산' : 'Snail Mucin, Ceramide, Panthenol, Hyaluronic Acid' },
     { label: language === 'ko' ? '용량' : 'Volume', value: '50ml / 1.69 fl oz' },
-    { label: language === 'ko' ? '마감' : 'Finish', value: language === 'ko' ? '내추럴, 듀이' : 'Natural, dewy' },
-    { label: language === 'ko' ? '피부 타입' : 'Skin Type', value: language === 'ko' ? '모든 피부 타입' : 'All skin types' },
+    { label: language === 'ko' ? '마감' : 'Finish', value: language === 'ko' ? '유리알 광채, 끈적임 없음' : 'Glass Skin, Non-sticky' },
+    { label: language === 'ko' ? '피부 타입' : 'Skin Type', value: language === 'ko' ? '모든 피부 타입 (민감성 포함)' : 'All skin types (Including sensitive)' },
     { label: language === 'ko' ? '크루얼티 프리' : 'Cruelty-Free', value: language === 'ko' ? '예' : 'Yes' },
     { label: language === 'ko' ? '파라벤 프리' : 'Paraben-Free', value: language === 'ko' ? '예' : 'Yes' },
     { label: language === 'ko' ? '향료' : 'Fragrance', value: language === 'ko' ? '무향' : 'Unscented' },
   ];
 
   const faqs = [
-    { q: language === 'ko' ? '메이크업 밑에 사용할 수 있나요?' : 'Can I use this under makeup?', a: language === 'ko' ? '네, 가벼운 세럼 텍스처로 메이크업 프라이머로 완벽하게 작동합니다. 파운데이션 도포 전 1-2분 흡수 시간을 두세요.' : 'Yes, the lightweight serum texture works perfectly as a makeup primer. Allow 1-2 minutes to absorb before applying foundation.' },
-    { q: language === 'ko' ? '백탁 현상이 있나요?' : 'Will this leave a white cast?', a: language === 'ko' ? '아니요, 모든 피부 톤에서 투명하게 흡수되도록 설계되었습니다.' : 'No, the formula is designed to absorb clear on all skin tones.' },
-    { q: language === 'ko' ? '지성/여드름 피부에 적합한가요?' : 'Is this suitable for oily/acne-prone skin?', a: language === 'ko' ? '네, 논코메도제닉이며 모공을 막지 않는 가벼운 텍스처입니다.' : 'Absolutely. It\'s non-comedogenic and has a lightweight texture that won\'t clog pores.' },
-    { q: language === 'ko' ? '얼마나 자주 재도포해야 하나요?' : 'How often should I reapply?', a: language === 'ko' ? '장시간 야외 노출 시 2시간마다, 수영이나 발한 후 재도포하세요.' : 'Reapply every 2 hours during prolonged sun exposure, or after swimming/sweating.' },
-    { q: language === 'ko' ? '민감한 피부에도 사용할 수 있나요?' : 'Can I use this if I have sensitive skin?', a: language === 'ko' ? '네, 센텔라 아시아티카 같은 진정 성분을 포함하고 있으며 자극성 성분이 없습니다.' : 'Yes, the formula includes soothing ingredients like Centella Asiatica and is free from harsh irritants.' },
-    { q: language === 'ko' ? '건성 피부에도 효과가 있나요?' : 'Does it work for dry skin?', a: language === 'ko' ? '네, 보습 세럼 베이스가 UV 차단과 함께 수분을 공급합니다.' : 'Yes, the moisturizing serum base provides hydration while protecting from UV damage.' },
-    { q: language === 'ko' ? '방수 기능이 있나요?' : 'Is this water-resistant?', a: language === 'ko' ? '40분간 중등도의 방수 기능이 있지만, 수영 후 재도포를 권장합니다.' : 'It offers moderate water resistance (40 minutes), but reapplication after swimming is recommended.' },
+    { q: language === 'ko' ? '달팽이 점액인데 끈적이지 않나요?' : 'Is it sticky because of the snail mucin?', a: language === 'ko' ? '달팽이 점액 특유의 쫀쫀한 영양감은 유지하되, 특수 휘핑 기법을 적용하여 구름처럼 가볍고 산뜻하게 흡수됩니다.' : 'It retains the nourishing properties of snail mucin but utilizes a special whipped technique for a light, cloud-like, non-sticky absorption.' },
+    { q: language === 'ko' ? '스킨 사이클링 휴식기에 사용해도 되나요?' : 'Is it suitable for skin cycling recovery days?', a: language === 'ko' ? '네, 세라마이드와 판테놀이 고농축 배합되어 필링이나 레티놀 사용 후 손상된 피부 장벽을 빠르게 복구합니다.' : 'Yes, it is highly concentrated with ceramides and panthenol to rapidly repair damaged skin barriers after peeling or retinol use.' },
+    { q: language === 'ko' ? '메이크업 전에 사용하면 밀리나요?' : 'Will it pill under makeup?', a: language === 'ko' ? '아닙니다. 피부에 빠르게 밀착되는 제형으로, 파운데이션 전 완벽한 유리알 피부 베이스 역할을 합니다.' : 'No. The fast-absorbing formula bonds perfectly to the skin, acting as a flawless glass skin base before foundation.' },
+    { q: language === 'ko' ? '지성이나 여드름 피부에 적합한가요?' : 'Is this suitable for oily/acne-prone skin?', a: language === 'ko' ? '네, 논코메도제닉이며 무거운 유분기 없이 수분 장벽만 채워주어 지성 피부에도 부담이 없습니다.' : 'Absolutely. It is non-comedogenic and fortifies the moisture barrier without heavy oils, making it comfortable for oily skin.' },
+    { q: language === 'ko' ? '달팽이 점액은 윤리적으로 채취되었나요?' : 'Is the snail mucin ethically sourced?', a: language === 'ko' ? '네, 달팽이에게 스트레스를 주지 않는 안전하고 윤리적인 환경에서 점액을 수집하여 크루얼티 프리 인증을 받았습니다.' : 'Yes, the mucin is collected in a safe, ethical environment that does not stress the snails, ensuring a cruelty-free process.' },
   ];
 
   // 상세 이미지 배열
-  const detailImages = ['/pd_1.png', '/pd_2.png', '/pd_3.png', '/pd_4.png', '/pd_5.png', '/pd_6.png', '/pd_7.png', '/pd_8-1.png', '/pd_9.png'];
+  const detailImages = ['/pd2_1.png', '/pd2_2.png', '/pd2_3.png', '/pd2_4.png', '/pd2_5.png', '/pd2_6.png'];
 
 return (
     <div className="pt-20 bg-[#FAFAF8]">
@@ -148,27 +145,27 @@ return (
 
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col space-y-6 h-[500px] lg:h-[600px]">
             <div>
-              <span className="inline-block px-3 py-1.5 bg-[#EEF2E0] text-[#6F832E] rounded-full text-sm font-semibold mb-3">NEW ARRIVAL</span>
+              <span className="inline-block px-3 py-1.5 bg-[#EEF2E0] text-[#6F832E] rounded-full text-sm font-semibold mb-3">BEST SELLER</span>
               <h1 className="text-3xl md:text-4xl font-bold text-[#111111] mb-2">{product.name}</h1>
               <p className="text-[#2C2C2C]/60">{product.volume}</p>
             </div>
 
             <p className="text-lg text-[#2C2C2C]/70">
-              {language === 'ko' ? '차세대 베모트리지놀 UV 필터와 수분 플럼핑 액티브 성분이 결합된 SPF 50+ / PA+++ 보호막. 백탁 없이 하루 종일 피부를 방어하며 맑은 유리알 광채를 선사하는 세럼 질감의 포뮬러입니다.' : 'An SPF 50+ / PA+++ protective shield combining next-generation Bemotrizinol UV filters and moisture-plumping actives. No white cast, delivering a clear, glass-skin glow.'}
+              {language === 'ko' ? '달팽이 점액과 고농축 세럼과 세라마이드가 결합된 구름결 장벽 복구 크림. 스킨 사이클링 후 자극받은 피부를 진정시키며, 끈적임 없이 맑은 유리알 광채를 선사하는 휘핑 포뮬러입니다.' : 'A cloud-like barrier recovery cream combining snail mucin and highly concentrated ceramides. Soothes irritated skin after skin cycling and delivers a clear, glass-skin glow with a non-sticky whipped formula.'}
             </p>
 
             <div className="flex items-center gap-2">
               {[1,2,3,4,5].map(i => <Star key={i} size={20} className="text-[#A9C356] fill-[#A9C356]" />)}
-              <span className="text-sm text-[#2C2C2C]/60 ml-2">(4.5/5 · 241 {language === 'ko' ? '리뷰' : 'reviews'})</span>
+              <span className="text-sm text-[#2C2C2C]/60 ml-2">(4.5/5 · 132 {language === 'ko' ? '리뷰' : 'reviews'})</span>
             </div>
 
             <div className="flex items-baseline gap-3 text-3xl font-bold">
               <span className="text-[#EF4444]">${product.price.toFixed(2)}</span>
-              <span className="text-[#9CA3AF] line-through text-xl">$35</span>
+              <span className="text-[#9CA3AF] line-through text-xl">$67</span>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              {['No White Cast', 'Oil-Free', 'Non-comedogenic', 'Cruelty-Free'].map((b) => (
+              {['Non-Sticky Mucin', 'Barrier Repair', 'Non-comedogenic', 'Cruelty-Free'].map((b) => (
                 <div key={b} className="flex items-center gap-2 text-sm text-[#6F832E]">
                   <Check size={16} className="text-[#A9C356]" />
                   {b}
@@ -212,17 +209,6 @@ return (
       {/* Brand Story & Detail Images */}
       <section className="bg-[#EEF2E0] py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-xl mx-auto aspect-video rounded-xl overflow-hidden shadow-lg border border-[#E6E6E0]/50 mb-20">
-            <iframe
-              width="100%"
-              height="100%"
-              src="https://www.youtube.com/embed/EngW7tLk6R8"
-              title="Klear Product Video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
 
           {/* pd1 ~ pd6 Images */}
           <div className="max-w-4xl mx-auto space-y-0 flex flex-col items-center">
@@ -299,10 +285,10 @@ return (
       <section className="bg-[#EEF2E0] py-20">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-[#111111] mb-4">
-            {language === 'ko' ? '매일 피부를 보호하고 가꾸세요' : 'Protect & Nourish Your Skin Every Day'}
+            {language === 'ko' ? '매일 피부 장벽을 복구하고 광채를 채우세요' : 'Repair & Glow Every Day'}
           </h2>
           <p className="text-lg text-[#2C2C2C]/60 mb-8">
-            {language === 'ko' ? '당신의 피부가 사랑할 가벼운 자외선 차단을 경험하세요.' : 'Experience lightweight sun protection that your skin will love.'}
+            {language === 'ko' ? '끈적임 없이 피부가 편안해지는 구름결 장벽 케어를 경험하세요.' : 'Experience the weightless, cloud-like barrier care that your skin will love.'}
           </p>
           <button onClick={handleBuyNow} className="px-10 py-4 bg-[#A9C356] hover:bg-[#8FA93C] text-white rounded-full font-semibold text-lg hover:shadow-xl hover:shadow-[#A9C356]/30 transition-all duration-300 hover:scale-105">
             {language === 'ko' ? '지금 구매하기' : 'Shop Now'}

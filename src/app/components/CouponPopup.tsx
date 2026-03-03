@@ -57,7 +57,7 @@ export function CouponPopup({ onOpenAuth }: CouponPopupProps) {
               {/* Product Image Banner */}
               <div className="relative pt-6 pb-2 px-8">
                 <div className="relative rounded-2xl overflow-hidden mb-4">
-                  <img src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600&q=80" alt="Klear Product" className="w-full h-40 object-cover rounded-2xl" />
+                  <img src="./sunserum_coupon.png" alt="Klear Product" className="w-full h-40 object-cover rounded-2xl" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#6F832E]/60 via-transparent to-transparent" />
                   <div className="absolute bottom-3 left-4 flex items-center gap-2">
                     <span className="text-white text-sm font-bold">{language === 'ko' ? '신규 회원 특별 혜택!' : 'New Member Special!'}</span>

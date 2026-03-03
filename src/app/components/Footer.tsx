@@ -1,34 +1,77 @@
+import { useState } from 'react';
 import { motion } from 'motion/react';
 import { Facebook, Instagram, Twitter, Youtube, Mail, MapPin, Phone } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 import { useLanguage } from '../contexts/LanguageContext';
+import { supabase } from '../../lib/supabase';
 
-export function Footer() {
+interface FooterProps {
+  onGoToAbout?: () => void;
+  onProductClick?: (productId: string) => void;
+  onGoToTerms?: () => void;
+  onOpenChatbot?: () => void;
+  onGoToAllProducts?: () => void;
+  onGoToPrivacy?: () => void;
+}
+
+export function Footer({ onGoToAbout, onProductClick, onGoToTerms, onOpenChatbot, onGoToAllProducts, onGoToPrivacy }: FooterProps) {
   const { t } = useLanguage();
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error' | 'duplicate'>('idle');
+
+  const handleSubscribe = async () => {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
+      return;
+    }
+    setStatus('loading');
+    try {
+      const { data: existing } = await supabase
+        .from('newsletter_subscribers')
+        .select('id')
+        .eq('email', email)
+        .maybeSingle();
+
+      if (existing) {
+        setStatus('duplicate');
+        setTimeout(() => setStatus('idle'), 3000);
+        return;
+      }
+
+      await supabase.from('newsletter_subscribers').insert({ email });
+
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        { user_email: email, to_email: email },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+      setStatus('success');
+      setEmail('');
+      setTimeout(() => setStatus('idle'), 4000);
+    } catch {
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
+    }
+  };
 
   const footerLinks = {
     products: [
-      { label: t('footer.product1'), href: '#' },
-      { label: t('footer.product2'), href: '#' },
-      { label: t('footer.product3'), href: '#' },
-      { label: t('footer.product4'), href: '#' },
+      { label: t('footer.product1'), href: '#product/sun-serum' },
+      { label: t('footer.product2'), href: '#product/blackpink-special-edition' },
+      { label: t('footer.product3'), href: '#technology', onClick: (e: React.MouseEvent) => { e.preventDefault(); onGoToAllProducts?.(); } },
     ],
     company: [
-      { label: t('footer.company1'), href: '#story' },
-      { label: t('footer.company2'), href: '#technology' },
-      { label: t('footer.company3'), href: '#' },
-      { label: t('footer.company4'), href: '#' },
+      { label: t('footer.company1'), href: '#about' },
+      { label: t('footer.company2'), href: '#' },
     ],
     support: [
-      { label: t('footer.support1'), href: '#' },
-      { label: t('footer.support2'), href: '#' },
-      { label: t('footer.support3'), href: '#' },
-      { label: t('footer.support4'), href: '#' },
+      { label: t('footer.support1'), href: '#chatbot', onClick: (e: React.MouseEvent) => { e.preventDefault(); onOpenChatbot?.(); } },
     ],
     legal: [
-      { label: t('footer.legal1'), href: '#' },
-      { label: t('footer.legal2'), href: '#' },
-      { label: t('footer.legal3'), href: '#' },
-      { label: t('footer.legal4'), href: '#' },
+      { label: t('footer.legal1'), href: '#privacy', onClick: (e: React.MouseEvent) => { e.preventDefault(); onGoToPrivacy?.(); } },
+      { label: t('footer.legal2'), href: '#terms' },
     ],
   };
 
@@ -51,13 +94,36 @@ export function Footer() {
               <div className="flex gap-4 max-w-md mx-auto">
                 <input
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
                   placeholder={t('footer.newsletter.placeholder')}
-                  className="flex-1 px-6 py-4 bg-white border border-[#E6E6E0] rounded-full focus:outline-none focus:border-[#A9C356] transition-colors text-[#2C2C2C]"
+                  disabled={status === 'loading'}
+                  className="flex-1 px-6 py-4 bg-white border border-[#E6E6E0] rounded-full focus:outline-none focus:border-[#A9C356] transition-colors text-[#2C2C2C] disabled:opacity-60"
                 />
-                <button className="px-8 py-4 bg-[#A9C356] hover:bg-[#8FA93C] text-white rounded-full font-semibold hover:shadow-lg hover:shadow-[#A9C356]/30 transition-all duration-300 hover:scale-105 whitespace-nowrap">
-                  {t('footer.newsletter.button')}
+                <button
+                  onClick={handleSubscribe}
+                  disabled={status === 'loading'}
+                  className="px-8 py-4 bg-[#A9C356] hover:bg-[#8FA93C] text-white rounded-full font-semibold hover:shadow-lg hover:shadow-[#A9C356]/30 transition-all duration-300 hover:scale-105 whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
+                >
+                  {status === 'loading' ? '...' : t('footer.newsletter.button')}
                 </button>
               </div>
+              {status === 'success' && (
+                <p className="mt-4 text-sm text-[#6F832E] font-medium">
+                  ✓ 구독이 완료되었습니다! 이메일을 확인해주세요.
+                </p>
+              )}
+              {status === 'duplicate' && (
+                <p className="mt-4 text-sm text-amber-600 font-medium">
+                  이미 구독된 이메일입니다.
+                </p>
+              )}
+              {status === 'error' && (
+                <p className="mt-4 text-sm text-red-500 font-medium">
+                  올바른 이메일 주소를 입력해주세요.
+                </p>
+              )}
             </div>
           </div>
         </motion.div>
@@ -67,10 +133,9 @@ export function Footer() {
           <div className="lg:col-span-2">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
               <div className="flex items-center gap-2 mb-4">
-                <img src="/klear-logo.png" alt="Klear" className="h-8 w-auto rounded-lg" />
-                <span className="text-2xl font-bold text-[#6F832E]">Klear</span>
+                <img src="/klear-logo-header.png" className="h-8 auto" />
               </div>
-              <p className="text-[#2C2C2C]/60 mb-6 leading-relaxed">{t('footer.tagline')}</p>
+              <p className="text-[#2C2C2C]/60 mb-6 leading-relaxed whitespace-pre-line">{t('footer.tagline')}</p>
               <div className="space-y-3 text-sm text-[#2C2C2C]/60">
                 <div className="flex items-center gap-3"><MapPin className="w-4 h-4 text-[#6F832E]" /><span>Seoul, South Korea</span></div>
                 <div className="flex items-center gap-3"><Phone className="w-4 h-4 text-[#6F832E]" /><span>+82 (2) 1234-5678</span></div>
@@ -89,7 +154,29 @@ export function Footer() {
               <h4 className="font-semibold mb-4 text-[#111111]">{section.title}</h4>
               <ul className="space-y-3">
                 {section.links.map((link) => (
-                  <li key={link.label}><a href={link.href} className="text-[#2C2C2C]/60 hover:text-[#6F832E] transition-colors">{link.label}</a></li>
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      onClick={(e) => {
+                        if ('onClick' in link && link.onClick) {
+                          link.onClick(e);
+                        } else if (link.href.startsWith('#product/')) {
+                          e.preventDefault();
+                          const productId = link.href.replace('#product/', '');
+                          if (onProductClick) onProductClick(productId);
+                        } else if (link.href === '#about') {
+                          e.preventDefault();
+                          if (onGoToAbout) onGoToAbout();
+                        } else if (link.href === '#terms') {
+                          e.preventDefault();
+                          if (onGoToTerms) onGoToTerms();
+                        }
+                      }}
+                      className="text-[#2C2C2C]/60 hover:text-[#6F832E] transition-colors cursor-pointer"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
                 ))}
               </ul>
             </motion.div>

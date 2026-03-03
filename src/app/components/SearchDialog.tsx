@@ -6,30 +6,39 @@ import { useLanguage } from '../contexts/LanguageContext';
 interface SearchDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  onProductClick?: (productId: string) => void;
 }
 
 const searchableContent = [
-  { id: '1', title: 'Bemot Moisturizing Sun Serum SPF 50', category: 'Product', section: '#products' },
-  { id: '2', title: 'Bemot Sun Serum SPF 50 (Travel)', category: 'Product', section: '#products' },
-  { id: '3', title: 'Niacinamide 5%', category: 'Ingredient', section: '#technology' },
-  { id: '4', title: 'Hyaluronic Acid', category: 'Ingredient', section: '#technology' },
-  { id: '5', title: 'Centella Asiatica', category: 'Ingredient', section: '#technology' },
-  { id: '6', title: 'Brand Story', category: 'About', section: '#story' },
-  { id: '7', title: 'Contact', category: 'Support', section: '#contact' },
+  { id: '1', title: 'Bemot Moisturizing Sun Serum SPF 50', titleKo: 'Bemot 모이스처라이징 선세럼 SPF 50', category: 'Product', categoryKo: '제품', productId: '1' },
+  { id: '2', title: 'Bemot Sun Serum SPF 50 (Travel)', titleKo: 'Bemot 선세럼 SPF 50 (트래블)', category: 'Product', categoryKo: '제품', productId: '2' },
+  { id: '3', title: 'BLACKPINK Special Edition', titleKo: '블랙핑크 스페셜 에디션', category: 'Product', categoryKo: '제품', productId: 'blackpink-special-edition' },
+  { id: '4', title: 'Niacinamide 5%', titleKo: '나이아신아마이드 5%', category: 'Ingredient', categoryKo: '성분', section: '#technology' },
+  { id: '5', title: 'Hyaluronic Acid', titleKo: '히알루론산', category: 'Ingredient', categoryKo: '성분', section: '#technology' },
+  { id: '6', title: 'Centella Asiatica', titleKo: '센텔라 아시아티카', category: 'Ingredient', categoryKo: '성분', section: '#technology' },
+  { id: '7', title: 'Brand Story', titleKo: '브랜드 스토리', category: 'About', categoryKo: '브랜드', section: '#story' },
+  { id: '8', title: 'Contact', titleKo: '고객센터', category: 'Support', categoryKo: '고객지원', section: '#contact' },
 ];
 
-export function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
+export function SearchDialog({ isOpen, onClose, onProductClick }: SearchDialogProps) {
   const [query, setQuery] = useState('');
   const { language } = useLanguage();
 
-  const filteredResults = searchableContent.filter((item) =>
-    item.title.toLowerCase().includes(query.toLowerCase())
-  );
+  const filteredResults = searchableContent.filter((item) => {
+    const q = query.toLowerCase();
+    return item.title.toLowerCase().includes(q) || item.titleKo.toLowerCase().includes(q);
+  });
 
-  const handleResultClick = (section: string) => {
-    const element = document.querySelector(section);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  const handleResultClick = (item: typeof searchableContent[number]) => {
+    if (item.productId && onProductClick) {
+      onProductClick(item.productId);
+      onClose();
+      setQuery('');
+      return;
+    }
+    if (item.section) {
+      const element = document.querySelector(item.section);
+      if (element) element.scrollIntoView({ behavior: 'smooth' });
       onClose();
       setQuery('');
     }
@@ -57,11 +66,15 @@ export function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
                 ) : (
                   <div className="p-4 space-y-2">
                     {filteredResults.map((result) => (
-                      <motion.button key={result.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} onClick={() => handleResultClick(result.section)} className="w-full text-left p-4 bg-[#FAFAF8] hover:bg-[#EEF2E0] border border-[#E6E6E0] rounded-xl transition-all duration-300 group">
+                      <motion.button key={result.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} onClick={() => handleResultClick(result)} className="w-full text-left p-4 bg-[#FAFAF8] hover:bg-[#EEF2E0] border border-[#E6E6E0] rounded-xl transition-all duration-300 group">
                         <div className="flex items-center justify-between">
                           <div>
-                            <h3 className="font-semibold text-[#111111] group-hover:text-[#6F832E] transition-colors">{result.title}</h3>
-                            <p className="text-sm text-[#2C2C2C]/60">{result.category}</p>
+                            <h3 className="font-semibold text-[#111111] group-hover:text-[#6F832E] transition-colors">
+                              {language === 'ko' ? result.titleKo : result.title}
+                            </h3>
+                            <p className="text-sm text-[#2C2C2C]/60">
+                              {language === 'ko' ? result.categoryKo : result.category}
+                            </p>
                           </div>
                           <Search className="w-4 h-4 text-[#2C2C2C]/40 group-hover:text-[#6F832E] transition-colors" />
                         </div>

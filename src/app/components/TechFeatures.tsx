@@ -26,7 +26,7 @@ export function TechFeatures({ onBuyNow }: TechFeaturesProps) {
 
   const stats = [
     { number: '98%', label: t('tech.stat1'), suffix: '' },
-    { number: '2-4', label: t('tech.stat2'), suffix: 'weeks' },
+    { number: '2-4', label: t('tech.stat2'), suffix: '' },
     { number: '50K+', label: t('tech.stat3'), suffix: '' },
     { number: '15+', label: t('tech.stat4'), suffix: '' },
   ];
@@ -54,7 +54,7 @@ export function TechFeatures({ onBuyNow }: TechFeaturesProps) {
             ALL PRODUCTS
           </span>
           <h2 className="text-4xl md:text-6xl font-bold mb-6 text-[#111111]">
-            {language === 'ko' ? '전체 제품' : 'All Products'}
+            {language === 'ko' ? '모든 제품' : 'All Products'}
           </h2>
           <p className="text-xl text-[#2C2C2C]/60 max-w-3xl mx-auto">
             {language === 'ko' ? '클리어의 모든 스킨케어 제품을 만나보세요' : 'Discover our complete skincare collection'}
@@ -69,10 +69,14 @@ export function TechFeatures({ onBuyNow }: TechFeaturesProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.6 }}
-              className="group relative"
+              // 1. h-full, flex, flex-col 추가
+              className="group relative h-full flex flex-col"
             >
-              <div className="relative bg-white border border-[#E6E6E0] rounded-3xl overflow-hidden hover:border-[#A9C356]/50 transition-all duration-500 hover:shadow-2xl hover:shadow-[#A9C356]/10">
-                <div className="relative h-80 overflow-hidden">
+              {/* 2. h-full, flex, flex-col 추가 */}
+              <div className="relative h-full flex flex-col bg-white border border-[#E6E6E0] rounded-3xl overflow-hidden hover:border-[#A9C356]/50 transition-all duration-500 hover:shadow-2xl hover:shadow-[#A9C356]/10">
+                
+                {/* 3. flex-shrink-0 추가하여 이미지 영역 높이 축소 방지 */}
+                <div className="relative h-80 overflow-hidden flex-shrink-0">
                   <ImageWithFallback
                     src={product.image}
                     alt={product.name}
@@ -84,9 +88,17 @@ export function TechFeatures({ onBuyNow }: TechFeaturesProps) {
                     {product.category}
                   </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-lg font-bold text-[#111111] mb-1">{product.name}</h3>
+                
+                {/* 4. flex, flex-col, flex-grow 추가하여 내부 텍스트 영역 확장 */}
+                <div className="p-6 flex flex-col flex-grow">
+                  
+                  {/* 5. min-h-[56px], line-clamp-2, break-keep 추가하여 타이틀 2줄 규격화 */}
+                  <h3 className="text-lg font-bold text-[#111111] mb-1 min-h-[56px] line-clamp-2 break-keep">
+                    {product.name}
+                  </h3>
+                  
                   <span className="text-xl font-bold text-[#6F832E] block mb-2">${product.price}</span>
+                  
                   <div className="flex items-center gap-2 mb-4">
                     <div className="flex gap-0.5">
                       {[1, 2, 3, 4].map((s) => (
@@ -102,7 +114,9 @@ export function TechFeatures({ onBuyNow }: TechFeaturesProps) {
                     <span className="text-sm text-[#2C2C2C]/50">({product.rating})</span>
                     <span className="text-sm text-[#2C2C2C]/50">Review {product.reviews}</span>
                   </div>
-                  <div className="grid grid-cols-2 gap-3">
+                  
+                  {/* 6. mt-auto, pt-4 추가하여 버튼을 카드 최하단에 고정 */}
+                  <div className="grid grid-cols-2 gap-3 mt-auto pt-4">
                     <button
                       onClick={() => handleBuyNow(product)}
                       className="py-3 bg-[#A9C356] hover:bg-[#8FA93C] text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-[#A9C356]/30 transition-all duration-300 hover:scale-105 text-sm"
