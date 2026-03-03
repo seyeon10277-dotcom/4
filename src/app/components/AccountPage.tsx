@@ -14,12 +14,12 @@ export function AccountPage({ onBack }: AccountPageProps) {
   const { user } = useAuth();
   const { language } = useLanguage();
   const [activeTab, setActiveTab] = useState<AccountTab>('profile');
-  const [couponCopied, setCouponCopied] = useState(false);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   const handleCopyCoupon = (code: string) => {
     navigator.clipboard.writeText(code).then(() => {
-      setCouponCopied(true);
-      setTimeout(() => setCouponCopied(false), 2000);
+      setCopiedCode(code);
+      setTimeout(() => setCopiedCode(null), 2000);
     });
   };
 
@@ -222,7 +222,7 @@ export function AccountPage({ onBack }: AccountPageProps) {
                                 onClick={() => handleCopyCoupon(coupon.code)}
                                 className="p-1.5 bg-[#EEF2E0] rounded-lg hover:bg-[#BBD07B]/30 transition-colors text-[#6F832E]"
                               >
-                                {couponCopied ? <Check size={16} /> : <Copy size={16} />}
+                                {copiedCode === coupon.code ? <Check size={16} /> : <Copy size={16} />}
                               </button>
                             </div>
                           </div>
