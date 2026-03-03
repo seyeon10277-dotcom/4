@@ -6,9 +6,10 @@ import { useCart } from '../contexts/CartContext';
 
 interface ProductShowcaseProps {
   onBuyNow?: () => void;
+  onProductClick?: (productId: string) => void; //
 }
 
-export function ProductShowcase({ onBuyNow }: ProductShowcaseProps) {
+export function ProductShowcase({ onBuyNow, onProductClick }: ProductShowcaseProps) {
   const { t, language } = useLanguage();
   const { addToCart } = useCart();
 
@@ -115,7 +116,8 @@ export function ProductShowcase({ onBuyNow }: ProductShowcaseProps) {
             >
               <div className="relative h-full flex flex-col bg-white border border-[#E6E6E0] rounded-3xl overflow-hidden hover:border-[#A9C356]/50 transition-all duration-500 hover:shadow-2xl hover:shadow-[#A9C356]/10">
                 {/* Product Image */}
-                <div className="relative h-96 overflow-hidden flex-shrink-0">
+                <div className="relative h-96 overflow-hidden flex-shrink-0 cursor-pointer"
+                    onClick={() => onProductClick && onProductClick(product.id)}>
                   <ImageWithFallback
                     src={product.image}
                     alt={product.name}

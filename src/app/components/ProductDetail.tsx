@@ -91,7 +91,7 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
   ];
 
   // 상세 이미지 배열
-  const detailImages = ['/pd_1.png', '/pd_2.png', '/pd_3.png', '/pd_4.png', '/pd_5.png', '/pd_6.png', '/pd_7.png', '/pd_8.png', '/pd_9.png'];
+  const detailImages = ['/pd_1.png', '/pd_2.png', '/pd_3.png', '/pd_4.png', '/pd_5.png', '/pd_6.png', '/pd_7.png', '/pd_8-1.png', '/pd_9.png'];
 
 return (
     <div className="pt-20 bg-[#FAFAF8]">

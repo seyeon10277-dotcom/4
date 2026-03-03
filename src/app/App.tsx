@@ -19,6 +19,7 @@ import { CartProvider } from './contexts/CartContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { About } from './components/About';
 
+
 type PageView = 'home' | 'checkout' | 'account' | 'productDetail' | 'about';
 
 export default function App() {
@@ -27,6 +28,8 @@ export default function App() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<PageView>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'detail'>('home');
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
   useEffect(() => {
     if (menuOpen || cartOpen || searchOpen || authOpen) {
@@ -56,6 +59,17 @@ export default function App() {
   const handleGoHome = () => {
     setCurrentPage('home');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+const handleProductClick = (productId: string) => {
+    setSelectedProductId(productId);
+    // setCurrentView('detail'); // 기존 잘못된 상태 업데이트 제거
+    setCurrentPage('productDetail'); // currentPage 상태 업데이트로 수정
+  };
+
+  const handleBack = () => {
+    setCurrentView('home');
+    setSelectedProductId(null);
   };
 
   const handleGoToProducts = () => {
@@ -189,7 +203,7 @@ export default function App() {
             {/* Main Content */}
             <main className="relative z-10">
               <Hero onShopNow={handleGoToProductDetail} />
-              <ProductShowcase onBuyNow={handleBuyNow} />
+              <ProductShowcase onBuyNow={handleBuyNow} onProductClick={handleProductClick} />
               <TechFeatures onBuyNow={() => setCurrentPage('checkout')} />
               <BrandStory />
             </main>
