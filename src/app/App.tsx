@@ -19,9 +19,10 @@ import { CartProvider } from './contexts/CartContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { About } from './components/About';
 import { TermsPage } from './components/TermsPage';
+import { PrivacyPage } from './components/PrivacyPage';
 
 
-type PageView = 'home' | 'checkout' | 'account' | 'productDetail' | 'about' | 'terms';
+type PageView = 'home' | 'checkout' | 'account' | 'productDetail' | 'about' | 'terms' | 'privacy';
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -84,14 +85,6 @@ export default function App() {
     }
   };
 
-  const handleGoToAllProducts = () => {
-    setCurrentPage('home');
-    setTimeout(() => {
-      const el = document.getElementById('technology');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-  };
-
   const handleBuyNow = () => {
     setCurrentPage('checkout');
   };
@@ -103,6 +96,11 @@ export default function App() {
 
   const handleGoToTerms = () => {
     setCurrentPage('terms');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleGoToPrivacy = () => {
+    setCurrentPage('privacy');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -160,7 +158,7 @@ export default function App() {
                 onGoToAbout={handleGoToAbout}
                 onProductClick={handleProductClick}
                 onGoToTerms={handleGoToTerms}
-                onGoToAllProducts={handleGoToAllProducts}
+                onGoToPrivacy={handleGoToPrivacy}
                 onOpenChatbot={handleOpenChatbot}
               />
               <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
@@ -179,6 +177,18 @@ export default function App() {
         <CartProvider>
           <LanguageProvider>
             <TermsPage onBack={handleGoHome} />
+          </LanguageProvider>
+        </CartProvider>
+      </AuthProvider>
+    );
+  }
+
+  if (currentPage === 'privacy') {
+    return (
+      <AuthProvider>
+        <CartProvider>
+          <LanguageProvider>
+            <PrivacyPage onBack={handleGoHome} />
           </LanguageProvider>
         </CartProvider>
       </AuthProvider>
@@ -207,7 +217,7 @@ export default function App() {
                 onGoToAbout={handleGoToAbout}
                 onProductClick={handleProductClick}
                 onGoToTerms={handleGoToTerms}
-                onGoToAllProducts={handleGoToAllProducts}
+                onGoToPrivacy={handleGoToPrivacy}
                 onOpenChatbot={handleOpenChatbot}
               />
               <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
@@ -249,7 +259,7 @@ export default function App() {
               onGoToAbout={handleGoToAbout}
               onProductClick={handleProductClick}
               onGoToTerms={handleGoToTerms}
-                onGoToAllProducts={handleGoToAllProducts}
+                onGoToPrivacy={handleGoToPrivacy}
               onOpenChatbot={handleOpenChatbot}
             />
 

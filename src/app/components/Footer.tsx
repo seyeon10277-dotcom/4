@@ -11,9 +11,10 @@ interface FooterProps {
   onGoToTerms?: () => void;
   onOpenChatbot?: () => void;
   onGoToAllProducts?: () => void;
+  onGoToPrivacy?: () => void;
 }
 
-export function Footer({ onGoToAbout, onProductClick, onGoToTerms, onOpenChatbot, onGoToAllProducts }: FooterProps) {
+export function Footer({ onGoToAbout, onProductClick, onGoToTerms, onOpenChatbot, onGoToAllProducts, onGoToPrivacy }: FooterProps) {
   const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error' | 'duplicate'>('idle');
@@ -69,7 +70,7 @@ export function Footer({ onGoToAbout, onProductClick, onGoToTerms, onOpenChatbot
       { label: t('footer.support1'), href: '#chatbot', onClick: (e: React.MouseEvent) => { e.preventDefault(); onOpenChatbot?.(); } },
     ],
     legal: [
-      { label: t('footer.legal1'), href: '#' },
+      { label: t('footer.legal1'), href: '#privacy', onClick: (e: React.MouseEvent) => { e.preventDefault(); onGoToPrivacy?.(); } },
       { label: t('footer.legal2'), href: '#terms' },
     ],
   };
