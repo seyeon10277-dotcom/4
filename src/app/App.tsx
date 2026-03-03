@@ -147,7 +147,10 @@ const handleProductClick = (productId: string) => {
                 <ProductDetail onBuyNow={handleBuyNow} onBack={handleGoHome} />
               )}
 
-              <Footer onGoToAbout={handleGoToAbout} />
+              <Footer 
+                onGoToAbout={handleGoToAbout} 
+                onProductClick={handleProductClick} // 추가
+              />
               {/* 모달 및 챗봇 생략 */}
             </div>
           </LanguageProvider>
@@ -175,7 +178,10 @@ const handleProductClick = (productId: string) => {
                 onGoToAbout={handleGoToAbout} // Props 전달 필요 시
               />
               <About onBack={handleGoHome} onShopNow={handleGoToProductDetail} />
-              <Footer onGoToAbout={handleGoToAbout} />
+              <Footer 
+                onGoToAbout={handleGoToAbout}
+                onProductClick={handleProductClick}
+               />
               <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
               <SearchDialog isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
               <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} onGoToAccount={handleGoToAccount} />
@@ -216,7 +222,10 @@ const handleProductClick = (productId: string) => {
             </main>
 
             {/* Footer */}
-            <Footer onGoToAbout={handleGoToAbout} />
+            <Footer 
+              onGoToAbout={handleGoToAbout}
+              onProductClick={handleProductClick}
+            />
 
             {/* Modals & Dialogs */}
             <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />

@@ -27,7 +27,7 @@ export function ProductShowcase({ onBuyNow, onProductClick }: ProductShowcasePro
     },
     {
       id: 'blackpink-special-edition',
-      name: language === 'ko' ? '블랙핑크 스페셜 에디션 스킨케어 세트' : 'BLACKPINK Special Edition Skincare Set',
+      name: language === 'ko' ? '배리어 리페어 수분 세트' : 'Barrier Repair & Hydration Set',
       category: t('products.special'),
       price: 59.99, // 할인가로 변경
       originalPrice: 67, // 기존 가격 추가

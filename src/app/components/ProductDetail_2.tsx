@@ -30,7 +30,7 @@ export function ProductDetail_2({ onBuyNow, onBack }: ProductDetailProps) {
 
   const product = {
     id: 'blackpink-special-edition', // ❌ 기존 'bemot-sun-serum-50ml'에서 반드시 변경
-    name: language === 'ko' ? '블랙핑크 스페셜 에디션 스킨케어 세트' : 'BLACKPINK Special Edition Skincare Set',
+    name: language === 'ko' ? '배리어 리페어 수분 세트' : 'Barrier Repair & Hydration Set',
     price: 59.99,
     originalPrice: 67.00,
     volume: '50ml / 1.69 fl oz',
@@ -69,7 +69,7 @@ export function ProductDetail_2({ onBuyNow, onBack }: ProductDetailProps) {
   ];
 
   const specs = [
-    { label: language === 'ko' ? '제품 유형' : 'Type', value: language === 'ko' ? '휘핑 장벽 크림' : 'Whipped barrier cream' },
+    { label: language === 'ko' ? '제품 유형' : 'Type', value: language === 'ko' ? '배리어 클라우드 크림, 스네일 뮤신 & 세라마이드 에센스' : 'Barrier Cloud Moisturizing Cream, Snail Mucin & Ceramide Barrier Essence' },
     { label: language === 'ko' ? '주요 성분' : 'Key Ingredients', value: language === 'ko' ? '달팽이 점액, 세라마이드, 판테놀, 히알루론산' : 'Snail Mucin, Ceramide, Panthenol, Hyaluronic Acid' },
     { label: language === 'ko' ? '용량' : 'Volume', value: '50ml / 1.69 fl oz' },
     { label: language === 'ko' ? '마감' : 'Finish', value: language === 'ko' ? '유리알 광채, 끈적임 없음' : 'Glass Skin, Non-sticky' },
@@ -161,7 +161,7 @@ return (
 
             <div className="flex items-baseline gap-3 text-3xl font-bold">
               <span className="text-[#EF4444]">${product.price.toFixed(2)}</span>
-              <span className="text-[#9CA3AF] line-through text-xl">$35</span>
+              <span className="text-[#9CA3AF] line-through text-xl">$67</span>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
@@ -209,17 +209,6 @@ return (
       {/* Brand Story & Detail Images */}
       <section className="bg-[#EEF2E0] py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-xl mx-auto aspect-video rounded-xl overflow-hidden shadow-lg border border-[#E6E6E0]/50 mb-20">
-            <iframe
-              width="100%"
-              height="100%"
-              src="https://www.youtube.com/embed/EngW7tLk6R8"
-              title="Klear Product Video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
 
           {/* pd1 ~ pd6 Images */}
           <div className="max-w-4xl mx-auto space-y-0 flex flex-col items-center">

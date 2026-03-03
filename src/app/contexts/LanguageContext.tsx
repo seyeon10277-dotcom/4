@@ -194,7 +194,7 @@ const translations = {
     'hero.subtitle2': 'Lightweight Sun Protection',
     'hero.title1': 'Barrier Repair & Hydration Set',
     'hero.title2': 'Bemot Moisturizing Sun Serum\nSPF 50',
-    'hero.desc1': 'Experience the Barrier Repair & Hydration Set\nat an exceptional value, and start your purest beauty routine for a healthy and resilient skin barrier!',
+    'hero.desc1': 'Experience the Barrier Repair & Hydration Set\nand start your purest beauty routine for a healthy and resilient skin barrier!',
     'hero.desc2': 'With our Bemotrizinol-powered oil-free formula,\nachieve a hydrating, white-cast-free glow\nand fresh UV protection simultaneously.',
     'hero.cta1': 'Shop Now',
     'hero.stat1': 'SPF 50',

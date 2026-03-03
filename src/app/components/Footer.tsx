@@ -6,9 +6,10 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 interface FooterProps {
   onGoToAbout?: () => void;
+  onProductClick?: (productId: string) => void; // 추가
 }
 
-export function Footer({ onGoToAbout }: FooterProps) {
+export function Footer({ onGoToAbout, onProductClick }: FooterProps) {
   const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -38,8 +39,8 @@ export function Footer({ onGoToAbout }: FooterProps) {
 
   const footerLinks = {
     products: [
-      { label: t('footer.product1'), href: '#products' },
-      { label: t('footer.product2'), href: '#products' },
+      { label: t('footer.product1'), href: '#product/sun-serum' },
+      { label: t('footer.product2'), href: '#product/blackpink-special-edition' },
       { label: t('footer.product3'), href: '#technology' },
     ],
     company: [
@@ -129,22 +130,25 @@ export function Footer({ onGoToAbout }: FooterProps) {
               <h4 className="font-semibold mb-4 text-[#111111]">{section.title}</h4>
               <ul className="space-y-3">
                 {section.links.map((link) => (
-                  <li key={link.label}>
-                    {/* 3. onClick 이벤트 핸들러 추가 */}
-                    <a 
-                      href={link.href} 
-                      onClick={(e) => {
-                        if (link.href === '#about') {
-                          e.preventDefault();
-                          if (onGoToAbout) onGoToAbout();
-                        }
-                      }}
-                      className="text-[#2C2C2C]/60 hover:text-[#6F832E] transition-colors"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
+                      <li key={link.label}>
+                        <a 
+                          href={link.href} 
+                          onClick={(e) => {
+                            if (link.href.startsWith('#product/')) {
+                              e.preventDefault();
+                              const productId = link.href.replace('#product/', '');
+                              if (onProductClick) onProductClick(productId);
+                            } else if (link.href === '#about') {
+                              e.preventDefault();
+                              if (onGoToAbout) onGoToAbout();
+                            }
+                          }}
+                          className="text-[#2C2C2C]/60 hover:text-[#6F832E] transition-colors"
+                        >
+                          {link.label}
+                        </a>
+                      </li>
+                    ))}
               </ul>
             </motion.div>
           ))}
