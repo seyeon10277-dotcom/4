@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Globe, Search, ShoppingCart, User, LogOut } from 'lucide-react';
+import { Menu, X, Globe, ShoppingCart, User, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useCart } from '../contexts/CartContext';
@@ -8,7 +8,6 @@ import { useAuth } from '../contexts/AuthContext';
 interface NavigationProps {
   menuOpen: boolean;
   setMenuOpen: (open: boolean) => void;
-  onSearchOpen: () => void;
   onCartOpen: () => void;
   onAuthOpen: () => void;
   onGoToAccount?: () => void;
@@ -17,7 +16,7 @@ interface NavigationProps {
   onGoToAbout?: () => void;
 }
 
-export function Navigation({ menuOpen, setMenuOpen, onSearchOpen, onCartOpen, onAuthOpen, onGoToAccount, onGoHome, onGoToProducts, onGoToAbout }: NavigationProps) {
+export function Navigation({ menuOpen, setMenuOpen, onCartOpen, onAuthOpen, onGoToAccount, onGoHome, onGoToProducts, onGoToAbout }: NavigationProps) {
   const [scrolled, setScrolled] = useState(false);
   const { language, setLanguage, t } = useLanguage();
   const { totalItems } = useCart();
@@ -84,15 +83,6 @@ export function Navigation({ menuOpen, setMenuOpen, onSearchOpen, onCartOpen, on
                 </motion.a>
               ))}
 
-              {/* Search Button */}
-              <button
-                onClick={onSearchOpen}
-                className="p-2 rounded-lg hover:bg-[#EEF2E0] transition-colors text-[#2C2C2C]"
-                title={language === 'ko' ? '검색' : 'Search'}
-              >
-                <Search className="w-5 h-5" />
-              </button>
-
               {/* Cart Button */}
               <button
                 onClick={onCartOpen}
@@ -148,12 +138,6 @@ export function Navigation({ menuOpen, setMenuOpen, onSearchOpen, onCartOpen, on
 
             {/* Mobile Buttons */}
             <div className="md:hidden flex items-center gap-2">
-              <button
-                onClick={onSearchOpen}
-                className="p-2 rounded-lg hover:bg-[#EEF2E0] transition-colors text-[#2C2C2C]"
-              >
-                <Search className="w-5 h-5" />
-              </button>
               <button
                 onClick={onCartOpen}
                 className="relative p-2 rounded-lg hover:bg-[#EEF2E0] transition-colors text-[#2C2C2C]"

@@ -7,7 +7,6 @@ import { TechFeatures } from './components/TechFeatures';
 import { BrandStory } from './components/BrandStory';
 import { Footer } from './components/Footer';
 import { Cart } from './components/Cart';
-import { SearchDialog } from './components/SearchDialog';
 import { Chatbot } from './components/Chatbot';
 import { AuthModal } from './components/AuthModal';
 import { CheckoutPage } from './components/CheckoutPage';
@@ -26,19 +25,17 @@ type PageView = 'home' | 'checkout' | 'account' | 'productDetail' | 'about';
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<PageView>('home');
-  const [currentView, setCurrentView] = useState<'home' | 'detail'>('home');
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (menuOpen || cartOpen || searchOpen || authOpen) {
+    if (menuOpen || cartOpen || authOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-  }, [menuOpen, cartOpen, searchOpen, authOpen]);
+  }, [menuOpen, cartOpen, authOpen]);
 
   const handleCheckout = () => {
     setCartOpen(false);
@@ -57,24 +54,19 @@ export default function App() {
     if (productId) {
       setSelectedProductId(productId.toString());
     } else {
-    setSelectedProductId('blackpink-special-edition'); // ❌ 기존 '1'에서 변경
-  }
-  setCurrentPage('productDetail');
-};
+      setSelectedProductId('blackpink-special-edition');
+    }
+    setCurrentPage('productDetail');
+  };
+
   const handleGoHome = () => {
     setCurrentPage('home');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-const handleProductClick = (productId: string) => {
+  const handleProductClick = (productId: string) => {
     setSelectedProductId(productId);
-    // setCurrentView('detail'); // 기존 잘못된 상태 업데이트 제거
-    setCurrentPage('productDetail'); // currentPage 상태 업데이트로 수정
-  };
-
-  const handleBack = () => {
-    setCurrentView('home');
-    setSelectedProductId(null);
+    setCurrentPage('productDetail');
   };
 
   const handleGoToProducts = () => {
@@ -95,8 +87,8 @@ const handleProductClick = (productId: string) => {
   };
 
   const handleGoToAbout = () => {
-  setCurrentPage('about');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+    setCurrentPage('about');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   if (currentPage === 'checkout') {
@@ -130,28 +122,28 @@ const handleProductClick = (productId: string) => {
           <LanguageProvider>
             <div className="relative min-h-screen bg-[#FAFAF8] text-[#2C2C2C] overflow-x-hidden">
               <Toaster position="top-center" richColors />
-              <Navigation 
-                onGoHome={handleGoHome} 
-                onSearchOpen={() => setSearchOpen(true)}
+              <Navigation
+                menuOpen={menuOpen}
+                setMenuOpen={setMenuOpen}
+                onGoHome={handleGoHome}
                 onCartOpen={() => setCartOpen(true)}
                 onAuthOpen={() => setAuthOpen(true)}
                 onGoToAccount={handleGoToAccount}
                 onGoToProducts={handleGoToProducts}
                 onGoToAbout={handleGoToAbout}
               />
-
-              {/* ID 분기 로직 적용 */}
               {selectedProductId === 'blackpink-special-edition' ? (
                 <ProductDetail_2 onBuyNow={handleBuyNow} onBack={handleGoHome} />
               ) : (
                 <ProductDetail onBuyNow={handleBuyNow} onBack={handleGoHome} />
               )}
-
-              <Footer 
-                onGoToAbout={handleGoToAbout} 
-                onProductClick={handleProductClick} // 추가
+              <Footer
+                onGoToAbout={handleGoToAbout}
+                onProductClick={handleProductClick}
               />
-              {/* 모달 및 챗봇 생략 */}
+              <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
+              <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} onGoToAccount={handleGoToAccount} />
+              <Chatbot />
             </div>
           </LanguageProvider>
         </CartProvider>
@@ -169,21 +161,19 @@ const handleProductClick = (productId: string) => {
               <Navigation
                 menuOpen={menuOpen}
                 setMenuOpen={setMenuOpen}
-                onSearchOpen={() => setSearchOpen(true)}
                 onCartOpen={() => setCartOpen(true)}
                 onAuthOpen={() => setAuthOpen(true)}
                 onGoToAccount={handleGoToAccount}
                 onGoHome={handleGoHome}
                 onGoToProducts={handleGoToProducts}
-                onGoToAbout={handleGoToAbout} // Props 전달 필요 시
+                onGoToAbout={handleGoToAbout}
               />
               <About onBack={handleGoHome} onShopNow={handleGoToProductDetail} />
-              <Footer 
+              <Footer
                 onGoToAbout={handleGoToAbout}
                 onProductClick={handleProductClick}
-               />
+              />
               <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
-              <SearchDialog isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
               <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} onGoToAccount={handleGoToAccount} />
               <Chatbot />
             </div>
@@ -200,11 +190,9 @@ const handleProductClick = (productId: string) => {
           <div className="relative min-h-screen bg-[#FAFAF8] text-[#2C2C2C] overflow-x-hidden">
             <Toaster position="top-center" richColors />
 
-            {/* Navigation */}
             <Navigation
               menuOpen={menuOpen}
               setMenuOpen={setMenuOpen}
-              onSearchOpen={() => setSearchOpen(true)}
               onCartOpen={() => setCartOpen(true)}
               onAuthOpen={() => setAuthOpen(true)}
               onGoToAccount={handleGoToAccount}
@@ -213,7 +201,6 @@ const handleProductClick = (productId: string) => {
               onGoToAbout={handleGoToAbout}
             />
 
-            {/* Main Content */}
             <main className="relative z-10">
               <Hero onShopNow={handleGoToProductDetail} />
               <ProductShowcase onBuyNow={handleBuyNow} onProductClick={handleProductClick} />
@@ -221,21 +208,14 @@ const handleProductClick = (productId: string) => {
               <BrandStory />
             </main>
 
-            {/* Footer */}
-            <Footer 
+            <Footer
               onGoToAbout={handleGoToAbout}
               onProductClick={handleProductClick}
             />
 
-            {/* Modals & Dialogs */}
             <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
-            <SearchDialog isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
             <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} onGoToAccount={handleGoToAccount} />
-
-            {/* Chatbot */}
             <Chatbot />
-
-            {/* Coupon Popup Ad */}
             <CouponPopup onOpenAuth={() => setAuthOpen(true)} />
           </div>
         </LanguageProvider>
