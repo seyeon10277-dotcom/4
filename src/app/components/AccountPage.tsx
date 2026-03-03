@@ -1,8 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ArrowLeft, User, Package, Ticket, Mail, Shield, Copy, Check } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { CartItem } from '../contexts/CartContext';
+
+interface Order {
+  id: string;
+  date: string;
+  items: CartItem[];
+  total: number;
+  status: string;
+}
 
 interface AccountPageProps {
   onBack: () => void;
@@ -15,6 +24,12 @@ export function AccountPage({ onBack }: AccountPageProps) {
   const { language } = useLanguage();
   const [activeTab, setActiveTab] = useState<AccountTab>('profile');
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('klear_orders');
+    if (saved) setOrders(JSON.parse(saved));
+  }, [activeTab]);
 
   const handleCopyCoupon = (code: string) => {
     navigator.clipboard.writeText(code).then(() => {
@@ -27,23 +42,6 @@ export function AccountPage({ onBack }: AccountPageProps) {
     { key: 'profile' as const, label: language === 'ko' ? '개인정보' : 'Profile', icon: User },
     { key: 'orders' as const, label: language === 'ko' ? '주문내역' : 'Orders', icon: Package },
     { key: 'coupons' as const, label: language === 'ko' ? '쿠폰함' : 'Coupons', icon: Ticket },
-  ];
-
-  const sampleOrders = [
-    {
-      id: 'ORD-2026-001',
-      date: '2026-02-20',
-      product: 'Bemot Moisturizing Sun Serum SPF 50',
-      price: 35,
-      status: language === 'ko' ? '배송완료' : 'Delivered',
-    },
-    {
-      id: 'ORD-2026-002',
-      date: '2026-02-25',
-      product: 'Bemot Sun Serum SPF 50 (Travel)',
-      price: 22,
-      status: language === 'ko' ? '배송중' : 'Shipping',
-    },
   ];
 
   const coupons = [
@@ -166,29 +164,40 @@ export function AccountPage({ onBack }: AccountPageProps) {
               {activeTab === 'orders' && (
                 <div className="bg-white border border-[#E6E6E0] rounded-2xl p-8">
                   <h2 className="text-2xl font-bold mb-6 text-[#111111]">{language === 'ko' ? '주문내역' : 'Order History'}</h2>
-                  <div className="space-y-4">
-                    {sampleOrders.map((order) => (
-                      <div key={order.id} className="border border-[#E6E6E0] rounded-xl p-5 hover:bg-[#FAFAF8] transition-colors">
-                        <div className="flex justify-between items-start mb-3">
-                          <div>
-                            <p className="font-bold text-[#111111]">{order.id}</p>
-                            <p className="text-sm text-[#2C2C2C]/60">{order.date}</p>
+                  {orders.length === 0 ? (
+                    <div className="text-center py-16">
+                      <Package className="w-12 h-12 text-[#2C2C2C]/20 mx-auto mb-3" />
+                      <p className="text-[#2C2C2C]/40">{language === 'ko' ? '주문 내역이 없습니다.' : 'No orders yet.'}</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {orders.map((order) => (
+                        <div key={order.id} className="border border-[#E6E6E0] rounded-xl p-5 hover:bg-[#FAFAF8] transition-colors">
+                          <div className="flex justify-between items-start mb-3">
+                            <div>
+                              <p className="font-bold text-[#111111]">{order.id}</p>
+                              <p className="text-sm text-[#2C2C2C]/60">{order.date}</p>
+                            </div>
+                            <span className="px-3 py-1 rounded-full text-sm font-medium bg-amber-50 text-amber-600">
+                              {language === 'ko' ? '배송준비중' : 'Processing'}
+                            </span>
                           </div>
-                          <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                            order.status.includes('완료') || order.status === 'Delivered'
-                              ? 'bg-[#EEF2E0] text-[#6F832E]'
-                              : 'bg-amber-50 text-amber-600'
-                          }`}>
-                            {order.status}
-                          </span>
+                          <div className="space-y-1 mb-3">
+                            {order.items.map((item) => (
+                              <div key={item.id} className="flex justify-between text-sm text-[#2C2C2C]">
+                                <span>{item.name} × {item.quantity}</span>
+                                <span>${(item.price * item.quantity).toFixed(2)}</span>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="flex justify-between items-center pt-2 border-t border-[#E6E6E0]">
+                            <span className="text-sm text-[#2C2C2C]/60">{language === 'ko' ? '총 결제금액' : 'Total'}</span>
+                            <p className="font-bold text-[#6F832E]">${order.total.toFixed(2)}</p>
+                          </div>
                         </div>
-                        <div className="flex justify-between items-center">
-                          <p className="text-[#2C2C2C]">{order.product}</p>
-                          <p className="font-bold text-[#6F832E]">${order.price}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 

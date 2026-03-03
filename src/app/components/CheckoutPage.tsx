@@ -14,11 +14,12 @@ const VALID_COUPONS: Record<string, { discount: number; label: string }> = {
 };
 
 export function CheckoutPage({ onBack }: CheckoutPageProps) {
-  const { cart, totalPrice } = useCart();
+  const { cart, totalPrice, clearCart } = useCart();
   const { language } = useLanguage();
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'paypal' | 'apple'>('card');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const [orderId, setOrderId] = useState('');
   const [couponInput, setCouponInput] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number; label: string } | null>(null);
   const [couponStatus, setCouponStatus] = useState<'idle' | 'error'>('idle');
@@ -49,6 +50,23 @@ export function CheckoutPage({ onBack }: CheckoutPageProps) {
   const handlePayment = () => {
     setIsProcessing(true);
     setTimeout(() => {
+      const now = new Date();
+      const dateStr = now.toISOString().slice(0, 10);
+      const newOrderId = `ORD-${dateStr.replace(/-/g, '')}-${Math.floor(Math.random() * 900 + 100)}`;
+
+      const newOrder = {
+        id: newOrderId,
+        date: dateStr,
+        items: cart,
+        total: finalPrice,
+        status: 'processing',
+      };
+
+      const existing = JSON.parse(localStorage.getItem('klear_orders') || '[]');
+      localStorage.setItem('klear_orders', JSON.stringify([newOrder, ...existing]));
+
+      setOrderId(newOrderId);
+      clearCart();
       setIsProcessing(false);
       setIsComplete(true);
     }, 2000);
@@ -62,7 +80,8 @@ export function CheckoutPage({ onBack }: CheckoutPageProps) {
             <CheckCircle className="w-20 h-20 text-[#A9C356] mx-auto mb-6" />
           </motion.div>
           <h2 className="text-3xl font-bold mb-4 text-[#111111]">{language === 'ko' ? '결제 완료!' : 'Payment Complete!'}</h2>
-          <p className="text-[#2C2C2C]/60 mb-8">{language === 'ko' ? '주문이 성공적으로 처리되었습니다. 감사합니다!' : 'Your order has been processed successfully. Thank you!'}</p>
+          <p className="text-[#2C2C2C]/60 mb-2">{language === 'ko' ? '주문이 성공적으로 처리되었습니다. 감사합니다!' : 'Your order has been processed successfully. Thank you!'}</p>
+          <p className="text-sm font-mono text-[#6F832E] mb-8">{orderId}</p>
           <button onClick={onBack} className="w-full py-4 bg-[#A9C356] hover:bg-[#8FA93C] text-white rounded-xl font-semibold transition-all duration-300">
             {language === 'ko' ? '쇼핑 계속하기' : 'Continue Shopping'}
           </button>
