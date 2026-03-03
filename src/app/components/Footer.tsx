@@ -9,9 +9,11 @@ interface FooterProps {
   onGoToAbout?: () => void;
   onProductClick?: (productId: string) => void;
   onGoToTerms?: () => void;
+  onOpenChatbot?: () => void;
+  onGoToAllProducts?: () => void;
 }
 
-export function Footer({ onGoToAbout, onProductClick, onGoToTerms }: FooterProps) {
+export function Footer({ onGoToAbout, onProductClick, onGoToTerms, onOpenChatbot, onGoToAllProducts }: FooterProps) {
   const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error' | 'duplicate'>('idle');
@@ -57,14 +59,14 @@ export function Footer({ onGoToAbout, onProductClick, onGoToTerms }: FooterProps
     products: [
       { label: t('footer.product1'), href: '#product/sun-serum' },
       { label: t('footer.product2'), href: '#product/blackpink-special-edition' },
-      { label: t('footer.product3'), href: '#technology' },
+      { label: t('footer.product3'), href: '#technology', onClick: (e: React.MouseEvent) => { e.preventDefault(); onGoToAllProducts?.(); } },
     ],
     company: [
       { label: t('footer.company1'), href: '#about' },
       { label: t('footer.company2'), href: '#' },
     ],
     support: [
-      { label: t('footer.support1'), href: '#'},
+      { label: t('footer.support1'), href: '#chatbot', onClick: (e: React.MouseEvent) => { e.preventDefault(); onOpenChatbot?.(); } },
     ],
     legal: [
       { label: t('footer.legal1'), href: '#' },
@@ -151,28 +153,30 @@ export function Footer({ onGoToAbout, onProductClick, onGoToTerms }: FooterProps
               <h4 className="font-semibold mb-4 text-[#111111]">{section.title}</h4>
               <ul className="space-y-3">
                 {section.links.map((link) => (
-                      <li key={link.label}>
-                        <a 
-                          href={link.href} 
-                          onClick={(e) => {
-                            if (link.href.startsWith('#product/')) {
-                              e.preventDefault();
-                              const productId = link.href.replace('#product/', '');
-                              if (onProductClick) onProductClick(productId);
-                            } else if (link.href === '#about') {
-                              e.preventDefault();
-                              if (onGoToAbout) onGoToAbout();
-                            } else if (link.href === '#terms') {
-                              e.preventDefault();
-                              if (onGoToTerms) onGoToTerms();
-                            }
-                          }}
-                          className="text-[#2C2C2C]/60 hover:text-[#6F832E] transition-colors"
-                        >
-                          {link.label}
-                        </a>
-                      </li>
-                    ))}
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      onClick={(e) => {
+                        if ('onClick' in link && link.onClick) {
+                          link.onClick(e);
+                        } else if (link.href.startsWith('#product/')) {
+                          e.preventDefault();
+                          const productId = link.href.replace('#product/', '');
+                          if (onProductClick) onProductClick(productId);
+                        } else if (link.href === '#about') {
+                          e.preventDefault();
+                          if (onGoToAbout) onGoToAbout();
+                        } else if (link.href === '#terms') {
+                          e.preventDefault();
+                          if (onGoToTerms) onGoToTerms();
+                        }
+                      }}
+                      className="text-[#2C2C2C]/60 hover:text-[#6F832E] transition-colors cursor-pointer"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </motion.div>
           ))}

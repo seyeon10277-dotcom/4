@@ -27,6 +27,7 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
+  const [chatbotOpen, setChatbotOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<PageView>('home');
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
@@ -83,6 +84,14 @@ export default function App() {
     }
   };
 
+  const handleGoToAllProducts = () => {
+    setCurrentPage('home');
+    setTimeout(() => {
+      const el = document.getElementById('technology');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
   const handleBuyNow = () => {
     setCurrentPage('checkout');
   };
@@ -95,6 +104,10 @@ export default function App() {
   const handleGoToTerms = () => {
     setCurrentPage('terms');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleOpenChatbot = () => {
+    setChatbotOpen(true);
   };
 
   if (currentPage === 'checkout') {
@@ -147,10 +160,12 @@ export default function App() {
                 onGoToAbout={handleGoToAbout}
                 onProductClick={handleProductClick}
                 onGoToTerms={handleGoToTerms}
+                onGoToAllProducts={handleGoToAllProducts}
+                onOpenChatbot={handleOpenChatbot}
               />
               <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
               <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} onGoToAccount={handleGoToAccount} />
-              <Chatbot />
+              <Chatbot externalOpen={chatbotOpen} onExternalOpenHandled={() => setChatbotOpen(false)} />
             </div>
           </LanguageProvider>
         </CartProvider>
@@ -192,10 +207,12 @@ export default function App() {
                 onGoToAbout={handleGoToAbout}
                 onProductClick={handleProductClick}
                 onGoToTerms={handleGoToTerms}
+                onGoToAllProducts={handleGoToAllProducts}
+                onOpenChatbot={handleOpenChatbot}
               />
               <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
               <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} onGoToAccount={handleGoToAccount} />
-              <Chatbot />
+              <Chatbot externalOpen={chatbotOpen} onExternalOpenHandled={() => setChatbotOpen(false)} />
             </div>
           </LanguageProvider>
         </CartProvider>
@@ -232,11 +249,13 @@ export default function App() {
               onGoToAbout={handleGoToAbout}
               onProductClick={handleProductClick}
               onGoToTerms={handleGoToTerms}
+                onGoToAllProducts={handleGoToAllProducts}
+              onOpenChatbot={handleOpenChatbot}
             />
 
             <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
             <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} onGoToAccount={handleGoToAccount} />
-            <Chatbot />
+            <Chatbot externalOpen={chatbotOpen} onExternalOpenHandled={() => setChatbotOpen(false)} />
             <CouponPopup onOpenAuth={() => setAuthOpen(true)} />
           </div>
         </LanguageProvider>
