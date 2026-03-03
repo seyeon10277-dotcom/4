@@ -99,7 +99,7 @@ export function Hero({ onShopNow }: HeroProps) {
                 {slides[currentSlide].badge}
               </span>
 
-              <p className="text-xs uppercase tracking-widest text-[#8FA93C] font-medium">
+              <p className="text-xs uppercase tracking-widest text-[#8FA93C] font-medium whitespace-pre-line">
                 {slides[currentSlide].subtitle}
               </p>
 
