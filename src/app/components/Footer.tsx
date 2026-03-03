@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Facebook, Instagram, Twitter, Youtube, Mail, MapPin, Phone } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import { useLanguage } from '../contexts/LanguageContext';
+import { supabase } from '../../lib/supabase';
 
 interface FooterProps {
   onGoToAbout?: () => void;
@@ -12,7 +13,7 @@ interface FooterProps {
 export function Footer({ onGoToAbout, onProductClick }: FooterProps) {
   const { t } = useLanguage();
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error' | 'duplicate'>('idle');
 
   const handleSubscribe = async () => {
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -22,6 +23,20 @@ export function Footer({ onGoToAbout, onProductClick }: FooterProps) {
     }
     setStatus('loading');
     try {
+      const { data: existing } = await supabase
+        .from('newsletter_subscribers')
+        .select('id')
+        .eq('email', email)
+        .maybeSingle();
+
+      if (existing) {
+        setStatus('duplicate');
+        setTimeout(() => setStatus('idle'), 3000);
+        return;
+      }
+
+      await supabase.from('newsletter_subscribers').insert({ email });
+
       await emailjs.send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
@@ -93,6 +108,11 @@ export function Footer({ onGoToAbout, onProductClick }: FooterProps) {
               {status === 'success' && (
                 <p className="mt-4 text-sm text-[#6F832E] font-medium">
                   ✓ 구독이 완료되었습니다! 이메일을 확인해주세요.
+                </p>
+              )}
+              {status === 'duplicate' && (
+                <p className="mt-4 text-sm text-amber-600 font-medium">
+                  이미 구독된 이메일입니다.
                 </p>
               )}
               {status === 'error' && (
