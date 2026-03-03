@@ -7,10 +7,11 @@ import { supabase } from '../../lib/supabase';
 
 interface FooterProps {
   onGoToAbout?: () => void;
-  onProductClick?: (productId: string) => void; // 추가
+  onProductClick?: (productId: string) => void;
+  onGoToTerms?: () => void;
 }
 
-export function Footer({ onGoToAbout, onProductClick }: FooterProps) {
+export function Footer({ onGoToAbout, onProductClick, onGoToTerms }: FooterProps) {
   const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error' | 'duplicate'>('idle');
@@ -67,7 +68,7 @@ export function Footer({ onGoToAbout, onProductClick }: FooterProps) {
     ],
     legal: [
       { label: t('footer.legal1'), href: '#' },
-      { label: t('footer.legal2'), href: '#' },
+      { label: t('footer.legal2'), href: '#terms' },
     ],
   };
 
@@ -161,6 +162,9 @@ export function Footer({ onGoToAbout, onProductClick }: FooterProps) {
                             } else if (link.href === '#about') {
                               e.preventDefault();
                               if (onGoToAbout) onGoToAbout();
+                            } else if (link.href === '#terms') {
+                              e.preventDefault();
+                              if (onGoToTerms) onGoToTerms();
                             }
                           }}
                           className="text-[#2C2C2C]/60 hover:text-[#6F832E] transition-colors"

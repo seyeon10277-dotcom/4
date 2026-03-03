@@ -18,9 +18,10 @@ import { LanguageProvider } from './contexts/LanguageContext';
 import { CartProvider } from './contexts/CartContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { About } from './components/About';
+import { TermsPage } from './components/TermsPage';
 
 
-type PageView = 'home' | 'checkout' | 'account' | 'productDetail' | 'about';
+type PageView = 'home' | 'checkout' | 'account' | 'productDetail' | 'about' | 'terms';
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -91,6 +92,11 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleGoToTerms = () => {
+    setCurrentPage('terms');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   if (currentPage === 'checkout') {
     return (
       <AuthProvider>
@@ -140,11 +146,24 @@ export default function App() {
               <Footer
                 onGoToAbout={handleGoToAbout}
                 onProductClick={handleProductClick}
+                onGoToTerms={handleGoToTerms}
               />
               <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
               <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} onGoToAccount={handleGoToAccount} />
               <Chatbot />
             </div>
+          </LanguageProvider>
+        </CartProvider>
+      </AuthProvider>
+    );
+  }
+
+  if (currentPage === 'terms') {
+    return (
+      <AuthProvider>
+        <CartProvider>
+          <LanguageProvider>
+            <TermsPage onBack={handleGoHome} />
           </LanguageProvider>
         </CartProvider>
       </AuthProvider>
@@ -172,6 +191,7 @@ export default function App() {
               <Footer
                 onGoToAbout={handleGoToAbout}
                 onProductClick={handleProductClick}
+                onGoToTerms={handleGoToTerms}
               />
               <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
               <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} onGoToAccount={handleGoToAccount} />
@@ -211,6 +231,7 @@ export default function App() {
             <Footer
               onGoToAbout={handleGoToAbout}
               onProductClick={handleProductClick}
+              onGoToTerms={handleGoToTerms}
             />
 
             <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
