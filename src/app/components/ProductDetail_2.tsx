@@ -29,7 +29,7 @@ export function ProductDetail_2({ onBuyNow, onBack }: ProductDetailProps) {
   ];
 
   const product = {
-    id: 'bemot-sun-serum-50ml',
+    id: 'blackpink-special-edition', // ❌ 기존 'bemot-sun-serum-50ml'에서 반드시 변경
     name: language === 'ko' ? '블랙핑크 스페셜 에디션 스킨케어 세트' : 'BLACKPINK Special Edition Skincare Set',
     price: 59.99,
     originalPrice: 67.00,
@@ -151,12 +151,12 @@ return (
             </div>
 
             <p className="text-lg text-[#2C2C2C]/70">
-              {language === 'ko' ? '달팽이 점액과 고농축 세라마이드가 결합된 구름결 장벽 복구 크림. 스킨 사이클링 후 자극받은 피부를 진정시키며, 끈적임 없이 맑은 유리알 광채를 선사하는 휘핑 포뮬러입니다.' : 'A cloud-like barrier recovery cream combining snail mucin and highly concentrated ceramides. Soothes irritated skin after skin cycling and delivers a clear, glass-skin glow with a non-sticky whipped formula.'}
+              {language === 'ko' ? '달팽이 점액과 고농축 세럼과 세라마이드가 결합된 구름결 장벽 복구 크림. 스킨 사이클링 후 자극받은 피부를 진정시키며, 끈적임 없이 맑은 유리알 광채를 선사하는 휘핑 포뮬러입니다.' : 'A cloud-like barrier recovery cream combining snail mucin and highly concentrated ceramides. Soothes irritated skin after skin cycling and delivers a clear, glass-skin glow with a non-sticky whipped formula.'}
             </p>
 
             <div className="flex items-center gap-2">
               {[1,2,3,4,5].map(i => <Star key={i} size={20} className="text-[#A9C356] fill-[#A9C356]" />)}
-              <span className="text-sm text-[#2C2C2C]/60 ml-2">(4.5/5 · 241 {language === 'ko' ? '리뷰' : 'reviews'})</span>
+              <span className="text-sm text-[#2C2C2C]/60 ml-2">(4.5/5 · 132 {language === 'ko' ? '리뷰' : 'reviews'})</span>
             </div>
 
             <div className="flex items-baseline gap-3 text-3xl font-bold">

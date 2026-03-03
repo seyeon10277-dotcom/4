@@ -15,7 +15,7 @@ export function Hero({ onShopNow }: HeroProps) {
 
   const slides = [
     {
-      id: 1,
+      id: 'blackpink-special-edition',
       title: t('hero.title1'),
       subtitle: t('hero.subtitle1'),
       description: t('hero.desc1'),

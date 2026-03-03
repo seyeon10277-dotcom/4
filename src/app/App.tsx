@@ -57,11 +57,10 @@ export default function App() {
     if (productId) {
       setSelectedProductId(productId.toString());
     } else {
-      setSelectedProductId('1');
-    }
-    setCurrentPage('productDetail');
-  };
-
+    setSelectedProductId('blackpink-special-edition'); // ❌ 기존 '1'에서 변경
+  }
+  setCurrentPage('productDetail');
+};
   const handleGoHome = () => {
     setCurrentPage('home');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -131,10 +130,18 @@ const handleProductClick = (productId: string) => {
           <LanguageProvider>
             <div className="relative min-h-screen bg-[#FAFAF8] text-[#2C2C2C] overflow-x-hidden">
               <Toaster position="top-center" richColors />
-              <Navigation /* props 생략 */ />
+              <Navigation 
+                onGoHome={handleGoHome} 
+                onSearchOpen={() => setSearchOpen(true)}
+                onCartOpen={() => setCartOpen(true)}
+                onAuthOpen={() => setAuthOpen(true)}
+                onGoToAccount={handleGoToAccount}
+                onGoToProducts={handleGoToProducts}
+                onGoToAbout={handleGoToAbout}
+              />
 
               {/* ID 분기 로직 적용 */}
-              {selectedProductId === '1' ? (
+              {selectedProductId === 'blackpink-special-edition' ? (
                 <ProductDetail_2 onBuyNow={handleBuyNow} onBack={handleGoHome} />
               ) : (
                 <ProductDetail onBuyNow={handleBuyNow} onBack={handleGoHome} />
