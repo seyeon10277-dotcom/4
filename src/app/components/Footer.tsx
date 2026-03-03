@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { motion } from 'motion/react';
 import { Facebook, Instagram, Twitter, Youtube, Mail, MapPin, Phone } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface FooterProps {
@@ -8,6 +10,31 @@ interface FooterProps {
 
 export function Footer({ onGoToAbout }: FooterProps) {
   const { t } = useLanguage();
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleSubscribe = async () => {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
+      return;
+    }
+    setStatus('loading');
+    try {
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        { user_email: email, to_email: email },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+      setStatus('success');
+      setEmail('');
+      setTimeout(() => setStatus('idle'), 4000);
+    } catch {
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
+    }
+  };
 
   const footerLinks = {
     products: [
@@ -47,13 +74,31 @@ export function Footer({ onGoToAbout }: FooterProps) {
               <div className="flex gap-4 max-w-md mx-auto">
                 <input
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
                   placeholder={t('footer.newsletter.placeholder')}
-                  className="flex-1 px-6 py-4 bg-white border border-[#E6E6E0] rounded-full focus:outline-none focus:border-[#A9C356] transition-colors text-[#2C2C2C]"
+                  disabled={status === 'loading'}
+                  className="flex-1 px-6 py-4 bg-white border border-[#E6E6E0] rounded-full focus:outline-none focus:border-[#A9C356] transition-colors text-[#2C2C2C] disabled:opacity-60"
                 />
-                <button className="px-8 py-4 bg-[#A9C356] hover:bg-[#8FA93C] text-white rounded-full font-semibold hover:shadow-lg hover:shadow-[#A9C356]/30 transition-all duration-300 hover:scale-105 whitespace-nowrap">
-                  {t('footer.newsletter.button')}
+                <button
+                  onClick={handleSubscribe}
+                  disabled={status === 'loading'}
+                  className="px-8 py-4 bg-[#A9C356] hover:bg-[#8FA93C] text-white rounded-full font-semibold hover:shadow-lg hover:shadow-[#A9C356]/30 transition-all duration-300 hover:scale-105 whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
+                >
+                  {status === 'loading' ? '...' : t('footer.newsletter.button')}
                 </button>
               </div>
+              {status === 'success' && (
+                <p className="mt-4 text-sm text-[#6F832E] font-medium">
+                  ✓ 구독이 완료되었습니다! 이메일을 확인해주세요.
+                </p>
+              )}
+              {status === 'error' && (
+                <p className="mt-4 text-sm text-red-500 font-medium">
+                  올바른 이메일 주소를 입력해주세요.
+                </p>
+              )}
             </div>
           </div>
         </motion.div>

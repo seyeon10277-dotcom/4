@@ -842,14 +842,30 @@ export function cn(...inputs) {
 
 ```env
 # Supabase 연결 (필수)
-VITE_SUPABASE_URL=https://yxmabhogqpxndrfpnofg.supabase.co
-VITE_SUPABASE_ANON_KEY=sb_publishable_NPmRDVDgv2Ct4i9TnYbRmA_sSVoMPDI
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
 
 # DeepL 번역 API (선택 — 없으면 내장 번역 사용)
 VITE_DEEPL_API_KEY=your-deepl-api-key-here
+
+# EmailJS 뉴스레터 구독 이메일 발송 (필수 — Footer 구독 기능)
+# 설정 방법: https://www.emailjs.com/docs/
+# 1. EmailJS 대시보드 → Email Services에서 서비스 연동 (Gmail 등)
+# 2. Email Templates에서 템플릿 생성 (변수: {{user_email}}, {{to_email}})
+# 3. Account → API Keys에서 Public Key 복사
+VITE_EMAILJS_SERVICE_ID=your-service-id       # 예: service_zb1kcpi
+VITE_EMAILJS_TEMPLATE_ID=your-template-id     # 예: template_i26nd4p
+VITE_EMAILJS_PUBLIC_KEY=your-public-key       # 예: s4V1umqSExvTv8MW6
 ```
 
 > `VITE_` 접두사 필수 — Vite가 클라이언트 번들에 포함시키는 조건
+
+### EmailJS 템플릿 변수
+
+| 변수 | 설명 |
+|------|------|
+| `{{user_email}}` | 구독자가 입력한 이메일 주소 |
+| `{{to_email}}` | 수신 이메일 (구독자에게 확인 메일 발송) |
 
 ### Netlify 배포 설정 (netlify.toml)
 
