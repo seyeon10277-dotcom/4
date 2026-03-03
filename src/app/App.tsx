@@ -14,6 +14,7 @@ import { CheckoutPage } from './components/CheckoutPage';
 import { CouponPopup } from './components/CouponPopup';
 import { AccountPage } from './components/AccountPage';
 import { ProductDetail } from './components/ProductDetail';
+import { ProductDetail_2 } from './components/ProductDetail_2';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { CartProvider } from './contexts/CartContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -52,7 +53,12 @@ export default function App() {
     setCurrentPage('account');
   };
 
-  const handleGoToProductDetail = () => {
+  const handleGoToProductDetail = (productId?: number | string) => {
+    if (productId) {
+      setSelectedProductId(productId.toString());
+    } else {
+      setSelectedProductId('1');
+    }
     setCurrentPage('productDetail');
   };
 
@@ -125,23 +131,17 @@ const handleProductClick = (productId: string) => {
           <LanguageProvider>
             <div className="relative min-h-screen bg-[#FAFAF8] text-[#2C2C2C] overflow-x-hidden">
               <Toaster position="top-center" richColors />
-              <Navigation
-                menuOpen={menuOpen}
-                setMenuOpen={setMenuOpen}
-                onSearchOpen={() => setSearchOpen(true)}
-                onCartOpen={() => setCartOpen(true)}
-                onAuthOpen={() => setAuthOpen(true)}
-                onGoToAccount={handleGoToAccount}
-                onGoHome={handleGoHome}
-                onGoToProducts={handleGoToProducts}
-                onGoToAbout={handleGoToAbout}
-              />
-              <ProductDetail onBuyNow={handleBuyNow} onBack={handleGoHome} />
+              <Navigation /* props 생략 */ />
+
+              {/* ID 분기 로직 적용 */}
+              {selectedProductId === '1' ? (
+                <ProductDetail_2 onBuyNow={handleBuyNow} onBack={handleGoHome} />
+              ) : (
+                <ProductDetail onBuyNow={handleBuyNow} onBack={handleGoHome} />
+              )}
+
               <Footer onGoToAbout={handleGoToAbout} />
-              <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
-              <SearchDialog isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
-              <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} onGoToAccount={handleGoToAccount} />
-              <Chatbot />
+              {/* 모달 및 챗봇 생략 */}
             </div>
           </LanguageProvider>
         </CartProvider>

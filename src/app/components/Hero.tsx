@@ -139,7 +139,7 @@ export function Hero({ onShopNow }: HeroProps) {
                 className="flex flex-wrap gap-4"
               >
                 <button
-                  onClick={onShopNow}
+                  onClick={() => onShopNow?.(slides[currentSlide].id)}
                   className="px-8 py-4 bg-[#A9C356] hover:bg-[#8FA93C] text-white rounded-full font-semibold hover:shadow-lg hover:shadow-[#A9C356]/30 transition-all duration-300 hover:scale-105"
                 >
                   {t('hero.cta1')}
