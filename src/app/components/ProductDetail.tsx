@@ -33,7 +33,7 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
   const product = {
     id: 'bemot-sun-serum-50ml',
     name: language === 'ko' ? '비모트 수분 선 세럼 SPF 50' : 'Bemot Moisturizing Sun Serum SPF 50',
-    price: 29.99,
+    price: 24.99,
     volume: '50ml / 1.69 fl oz',
   };
 
@@ -164,7 +164,7 @@ return (
 
             <div className="flex items-baseline gap-3 text-3xl font-bold">
               <span className="text-[#EF4444]">${product.price.toFixed(2)}</span>
-              <span className="text-[#9CA3AF] line-through text-xl">$35</span>
+              <span className="text-[#9CA3AF] line-through text-xl">$32</span>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
