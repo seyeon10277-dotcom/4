@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { ArrowLeft, CreditCard, Wallet, Smartphone, CheckCircle, Tag, X } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useAuth } from '../contexts/AuthContext';
 
 interface CheckoutPageProps {
   onBack: () => void;
@@ -16,6 +17,7 @@ const VALID_COUPONS: Record<string, { discount: number; label: string }> = {
 export function CheckoutPage({ onBack }: CheckoutPageProps) {
   const { cart, totalPrice, clearCart } = useCart();
   const { language } = useLanguage();
+  const { user } = useAuth();
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'paypal' | 'apple'>('card');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -62,8 +64,9 @@ export function CheckoutPage({ onBack }: CheckoutPageProps) {
         status: 'processing',
       };
 
-      const existing = JSON.parse(localStorage.getItem('klear_orders') || '[]');
-      localStorage.setItem('klear_orders', JSON.stringify([newOrder, ...existing]));
+      const orderKey = `klear_orders_${user?.id ?? 'guest'}`;
+      const existing = JSON.parse(localStorage.getItem(orderKey) || '[]');
+      localStorage.setItem(orderKey, JSON.stringify([newOrder, ...existing]));
 
       setOrderId(newOrderId);
       clearCart();
