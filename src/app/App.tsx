@@ -104,6 +104,14 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleGoToAllProducts = () => {
+    setCurrentPage('home');
+    setTimeout(() => {
+      const el = document.getElementById('technology');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }, 150);
+  };
+
   const handleOpenChatbot = () => {
     setChatbotOpen(true);
   };
@@ -159,6 +167,7 @@ export default function App() {
                 onProductClick={handleProductClick}
                 onGoToTerms={handleGoToTerms}
                 onGoToPrivacy={handleGoToPrivacy}
+                onGoToAllProducts={handleGoToAllProducts}
                 onOpenChatbot={handleOpenChatbot}
               />
               <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
@@ -218,6 +227,7 @@ export default function App() {
                 onProductClick={handleProductClick}
                 onGoToTerms={handleGoToTerms}
                 onGoToPrivacy={handleGoToPrivacy}
+                onGoToAllProducts={handleGoToAllProducts}
                 onOpenChatbot={handleOpenChatbot}
               />
               <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
@@ -259,7 +269,8 @@ export default function App() {
               onGoToAbout={handleGoToAbout}
               onProductClick={handleProductClick}
               onGoToTerms={handleGoToTerms}
-                onGoToPrivacy={handleGoToPrivacy}
+              onGoToPrivacy={handleGoToPrivacy}
+              onGoToAllProducts={handleGoToAllProducts}
               onOpenChatbot={handleOpenChatbot}
             />
 
