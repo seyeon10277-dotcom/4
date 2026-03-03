@@ -70,7 +70,7 @@ export function About({ onBack, onShopNow }: AboutProps) {
       </div>
 
       {/* MISSION */}
-      <section className="bg-[#FAFAF8] py-24 px-6">
+      <section className="relative bg-[#FAFAF8] py-24 px-6 overflow-hidden z-0">
         <div className="max-w-6xl mx-auto">
           <motion.div {...fadeUpVariant} className="text-center mb-16">
             <div className="text-[10px] font-semibold tracking-widest uppercase text-[#6F832E] mb-2.5">
@@ -129,6 +129,99 @@ export function About({ onBack, onShopNow }: AboutProps) {
               </p>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* OTC CERTIFICATION */}
+      <section className="relative bg-white py-24 px-6 overflow-hidden z-10">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Image Side */}
+            <motion.div
+              {...fadeUpVariant}
+              className="relative rounded-3xl overflow-hidden min-h-[400px] lg:min-h-[500px] group"
+            >
+              <img
+                src="/otc.png"
+                alt="FDA-Compliant OTC Manufacturing Facility"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              {/* Overlay badge */}
+              <div className="absolute bottom-6 left-6 right-6">
+                <div className="bg-white/95 backdrop-blur-sm rounded-2xl px-6 py-4 flex items-center gap-4 shadow-lg">
+                  <div className="w-10 h-10 rounded-full bg-[#A9C356] flex items-center justify-center shrink-0">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="text-[11px] font-semibold tracking-widest uppercase text-[#6F832E]">{t('otc.badge.official')}</div>
+                    <div className="text-sm font-semibold text-[#2C2C2C]">{t('otc.badge.certified')}</div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Text Side */}
+            <motion.div {...fadeUpVariant} transition={{ delay: 0.2, duration: 0.8 }}>
+              <div className="text-[10px] font-semibold tracking-widest uppercase text-[#6F832E] mb-3">
+                {t('otc.badge')}
+              </div>
+              <h2 className="font-['Playfair_Display'] text-3xl lg:text-5xl font-bold text-[#2C2C2C] leading-snug mb-5">
+                {t('otc.title1')}<br />
+                <em className="font-normal italic text-[#A9C356]">{t('otc.title2')}</em>
+              </h2>
+              <p className="text-base text-[#2C2C2C]/70 font-light leading-relaxed mb-10">
+                {t('otc.desc')}
+              </p>
+
+              {/* Trust badges */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {[
+                  {
+                    icon: (
+                      <svg className="w-5 h-5 text-[#A9C356]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                    ),
+                    title: t('otc.trust1.title'),
+                    desc: t('otc.trust1.desc'),
+                  },
+                  {
+                    icon: (
+                      <svg className="w-5 h-5 text-[#A9C356]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                      </svg>
+                    ),
+                    title: t('otc.trust2.title'),
+                    desc: t('otc.trust2.desc'),
+                  },
+                  {
+                    icon: (
+                      <svg className="w-5 h-5 text-[#A9C356]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                      </svg>
+                    ),
+                    title: t('otc.trust3.title'),
+                    desc: t('otc.trust3.desc'),
+                  },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className="bg-[#FAFAF8] rounded-2xl p-5 flex flex-col gap-3 border border-[#E6E6E0]"
+                  >
+                    <div className="w-9 h-9 rounded-xl bg-[#A9C356]/10 flex items-center justify-center">
+                      {item.icon}
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-[#2C2C2C] mb-0.5">{item.title}</div>
+                      <div className="text-xs text-[#2C2C2C]/55 font-light leading-relaxed">{item.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 

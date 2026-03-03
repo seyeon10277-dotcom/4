@@ -97,7 +97,21 @@ const translations = {
     'story.value3.desc': '임상 테스트 및 과학적 검증',
     'story.value4.title': '고객 우선',
     'story.value4.desc': '모든 피부 타입을 위한 개인 맞춤형 솔루션',
-    
+
+    // Korean (ko) - Story 섹션 아래에 추가
+    'otc.badge': '제조 시설 인증',
+    'otc.title1': '꼼꼼한 기준으로',
+    'otc.title2': '검증된 안전함',
+    'otc.desc': '저희 제품은 FDA 규정을 완벽히 준수하는 OTC 인증 시설에서 생산됩니다. 엄격한 품질 관리 프로세스와 철저한 위생 기준 아래, 매 배치마다 동일한 순도와 효능을 보장합니다. 피부에 닿는 모든 것, 타협 없이 만듭니다.',
+    'otc.badge.official': '공식 인증',
+    'otc.badge.certified': 'FDA-Compliant · OTC-Certified Facility',
+    'otc.trust1.title': 'FDA 규정 준수',
+    'otc.trust1.desc': '미국 식품의약국 기준 완전 충족',
+    'otc.trust2.title': 'OTC 인증 시설',
+    'otc.trust2.desc': '의약외품 등급 생산 환경',
+    'otc.trust3.title': '배치별 품질 검사',
+    'otc.trust3.desc': '출하 전 전수 검사 완료',
+
     // Footer
     'footer.newsletter.title': '최신 소식 받기',
     'footer.newsletter.desc': '신제품, 뷰티 팁, 특별 혜택에 대한 독점 액세스',
@@ -252,6 +266,19 @@ const translations = {
     'story.value3.desc': 'Clinically tested and scientifically validated',
     'story.value4.title': 'Customer First',
     'story.value4.desc': 'Personalized solutions for every skin type',
+
+    'otc.badge': 'Manufacturing Certification',
+    'otc.title1': 'Held to the Highest Standards.',
+    'otc.title2': 'Safety You Can Trust.',
+    'otc.desc': 'Every Klear product is manufactured in an OTC-certified facility in full compliance with FDA regulations. Rigorous quality control protocols and uncompromising hygiene standards ensure identical purity and potency in every single batch. Because what touches your skin deserves nothing less.',
+    'otc.badge.official': 'Official Certification',
+    'otc.badge.certified': 'FDA-Compliant · OTC-Certified Facility',
+    'otc.trust1.title': 'FDA Compliant',
+    'otc.trust1.desc': ' ',
+    'otc.trust2.title': 'OTC-Certified LAB',
+    'otc.trust2.desc': ' ',
+    'otc.trust3.title': 'Batch-by-Batch QC',
+    'otc.trust3.desc': ' ',
     
     // Footer
     'footer.newsletter.title': 'Stay Updated',

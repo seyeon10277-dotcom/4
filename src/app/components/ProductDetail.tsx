@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Sun, Droplets, Shield, Heart, ChevronDown, ChevronUp, Plus, Check, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -13,6 +13,9 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
   const { language } = useLanguage();
   const { addToCart } = useCart();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   
   // 1. 이미지 슬라이더 상태 및 데이터 추가
   const [currentIndex, setCurrentIndex] = useState(0);
