@@ -288,16 +288,15 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
       {/* Brand Story & Detail Images */}
       <section className="bg-[#EEF2E0] py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-xl mx-auto aspect-video rounded-xl overflow-hidden shadow-lg border border-[#E6E6E0]/50 mb-20">
-            <iframe
+          <div className="max-w-3xl mx-auto aspect-video rounded-xl overflow-hidden shadow-lg border border-[#E6E6E0]/50 mb-20">
+            <video
               width="100%"
               height="100%"
-              src="https://www.youtube.com/embed/EngW7tLk6R8"
-              title="Klear Product Video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+              controls
+              className="w-full h-full object-cover"
+            >
+              <source src="/adv_video.mp4" type="video/mp4" />
+            </video>
           </div>
 
           <div className="max-w-4xl mx-auto space-y-0 flex flex-col items-center">
