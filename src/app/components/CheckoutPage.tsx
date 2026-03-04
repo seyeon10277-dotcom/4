@@ -9,9 +9,9 @@ interface CheckoutPageProps {
   onBack: () => void;
 }
 
-const VALID_COUPONS: Record<string, { discount: number; label: string }> = {
-  WELCOME20: { discount: 0.2, label: '신규 회원 20% 할인' },
-  SUMMER10:  { discount: 0.1, label: '여름 특별 10% 할인' },
+const VALID_COUPONS: Record<string, { discount: number; label: { ko: string; en: string } }> = {
+  WELCOME20: { discount: 0.2, label: { ko: '신규 회원 20% 할인', en: 'New Member 20% Off' } },
+  SUMMER10:  { discount: 0.1, label: { ko: '여름 특별 10% 할인', en: 'Summer Special 10% Off' } },
 };
 
 export function CheckoutPage({ onBack }: CheckoutPageProps) {
@@ -23,7 +23,7 @@ export function CheckoutPage({ onBack }: CheckoutPageProps) {
   const [isComplete, setIsComplete] = useState(false);
   const [orderId, setOrderId] = useState('');
   const [couponInput, setCouponInput] = useState('');
-  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number; label: string } | null>(null);
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number; label: { ko: string; en: string } } | null>(null);
   const [couponStatus, setCouponStatus] = useState<'idle' | 'error'>('idle');
 
   const discountAmount = appliedCoupon ? totalPrice * appliedCoupon.discount : 0;
@@ -166,6 +166,7 @@ export function CheckoutPage({ onBack }: CheckoutPageProps) {
                   </div>
                 ))}
               </div>
+
               {/* 쿠폰 입력 */}
               <div className="mb-6">
                 <p className="text-sm font-medium text-[#2C2C2C]/60 mb-2 flex items-center gap-1">
@@ -177,7 +178,8 @@ export function CheckoutPage({ onBack }: CheckoutPageProps) {
                     <div>
                       <span className="font-mono font-bold text-[#6F832E] text-sm">{appliedCoupon.code}</span>
                       <span className="ml-2 text-xs text-[#6F832E]">
-                        {language === 'ko' ? appliedCoupon.label : `-${(appliedCoupon.discount * 100).toFixed(0)}% OFF`}
+                        {/* ✅ 언어에 맞는 쿠폰 label 표시 */}
+                        {appliedCoupon.label[language as 'ko' | 'en']}
                       </span>
                     </div>
                     <button onClick={handleRemoveCoupon} className="p-1 hover:bg-[#BBD07B]/30 rounded-lg transition-colors text-[#6F832E]">
