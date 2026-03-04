@@ -18,8 +18,8 @@ export function ProductShowcase({ onBuyNow, onProductClick }: ProductShowcasePro
       id: 'bemot-sun-serum-50ml',
       name: language === 'ko' ? '비모트 수분 선 세럼 SPF 50' : 'Bemot Moisturizing Sun Serum SPF 50',
       category: t('products.serum'),
-      price: 29.99, // 할인가로 변경
-      originalPrice: 35, // 기존 가격 추가
+      price: 24.99, // 할인가로 변경
+      originalPrice: 32, // 기존 가격 추가
       rating: 4.5,
       reviews: 241,
       image: './sunserum_hero.png',

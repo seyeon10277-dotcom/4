@@ -103,21 +103,38 @@ Desktop/4/
 ├── .env                          # 환경 변수 (Supabase URL/Key, DeepL API Key)
 ├── .env.example                  # 환경 변수 템플릿
 ├── .gitignore                    # Git 무시 파일 목록
+├── .gitattributes                # Git 속성 설정
 ├── package.json                  # 의존성 & 스크립트 정의
+├── pnpm-lock.yaml                # pnpm 잠금 파일
 ├── vite.config.ts                # Vite 빌드 설정
-├── postcss.config.mjs            # PostCSS 설정 (최소 설정)
+├── postcss.config.mjs            # PostCSS 설정
 ├── index.html                    # HTML 진입점 (SPA 루트)
 ├── netlify.toml                  # Netlify 배포 설정 (SPA 리디렉션 포함)
+├── extensions.json               # 권장 VSCode 확장 목록
 ├── ATTRIBUTIONS.md               # 크레딧/출처 명시
 ├── DOWNLOAD_CHECKLIST.md         # 설치 체크리스트
 ├── VSCODE_GUIDE.md               # VSCode 설정 가이드
 │
-├── public/
-│   ├── klear-logo.png            # 브랜드 로고 (6.4KB)
-│   └── blackpink-special-edition.png  # BLACKPINK 협업 이미지 (302KB)
+├── public/                       # 정적 자산 (빌드 시 그대로 복사)
+│   ├── Favicon.png               # 파비콘
+│   ├── klear-logo.png            # 브랜드 로고
+│   ├── klear-logo-header.png     # 헤더용 로고
+│   ├── blackpink_hero.png        # BLACKPINK 히어로 이미지
+│   ├── blackpink_productshow.png # BLACKPINK 상품 쇼케이스 이미지
+│   ├── sunserum_hero.png         # 선세럼 히어로 이미지 1
+│   ├── sunserum_hero_2.png       # 선세럼 히어로 이미지 2
+│   ├── sunserum_show.png         # 선세럼 쇼케이스 이미지
+│   ├── sunserum_coupon.png       # 쿠폰 팝업 이미지
+│   ├── otc.png                   # OTC 관련 이미지
+│   ├── about1~5.png              # 브랜드 스토리 이미지 5장
+│   ├── 1~9.png                   # 범용 이미지 9장
+│   ├── Component 1~5.png         # Figma 컴포넌트 내보내기 이미지 5장
+│   ├── pd_1~9.png                # 상품 상세 이미지 (ProductDetail) 9장
+│   └── pd2_1~6.png               # 상품 상세 이미지 (ProductDetail_2) 6장
 │
 ├── src/
 │   ├── main.tsx                  # React DOM 렌더 진입점
+│   ├── vite-env.d.ts             # Vite 환경 변수 타입 선언
 │   │
 │   ├── app/
 │   │   ├── App.tsx               # 루트 컴포넌트 — 페이지 라우팅 & Context Provider
@@ -128,16 +145,20 @@ Desktop/4/
 │   │   │   ├── ProductShowcase.tsx  # 상품 그리드 + 별점 + 장바구니 버튼
 │   │   │   ├── TechFeatures.tsx  # 성분 기술 소개 카드 6개
 │   │   │   ├── BrandStory.tsx    # 브랜드 연혁 타임라인 + 핵심 가치
+│   │   │   ├── About.tsx         # 브랜드 소개 섹션
 │   │   │   ├── Footer.tsx        # 푸터 (뉴스레터, 링크, SNS, 연락처)
 │   │   │   ├── Cart.tsx          # 장바구니 슬라이드 사이드바
 │   │   │   ├── SearchDialog.tsx  # 통합 검색 모달
 │   │   │   ├── AuthModal.tsx     # 로그인/회원가입/찾기 모달 (5가지 뷰)
-│   │   │   ├── CheckoutPage.tsx  # 결제 페이지 (전체 화면)
-│   │   │   ├── AccountPage.tsx   # 마이페이지 (프로필/주문/쿠폰 탭)
-│   │   │   ├── ProductDetail.tsx # 상품 상세 페이지
+│   │   │   ├── CheckoutPage.tsx  # 결제 페이지 — 유저별 주문 저장
+│   │   │   ├── AccountPage.tsx   # 마이페이지 — 프로필/주문내역/쿠폰 + 배송취소
+│   │   │   ├── ProductDetail.tsx # 상품 1 상세 페이지 (선세럼)
+│   │   │   ├── ProductDetail_2.tsx # 상품 2 상세 페이지 (BLACKPINK 에디션)
 │   │   │   ├── Chatbot.tsx       # 우하단 고정 AI 챗봇
 │   │   │   ├── CouponPopup.tsx   # 신규 회원 쿠폰 팝업 (세션당 1회)
 │   │   │   ├── StarRating.tsx    # 별점 리뷰 컴포넌트
+│   │   │   ├── PrivacyPage.tsx   # 개인정보처리방침 페이지
+│   │   │   ├── TermsPage.tsx     # 이용약관 페이지
 │   │   │   │
 │   │   │   ├── figma/
 │   │   │   │   └── ImageWithFallback.tsx  # 이미지 로드 실패 시 fallback 처리
@@ -145,6 +166,8 @@ Desktop/4/
 │   │   │   └── ui/               # shadcn/ui 기반 재사용 UI 컴포넌트 (40개+)
 │   │   │       ├── accordion.tsx      # 아코디언
 │   │   │       ├── alert-dialog.tsx   # 경고 다이얼로그
+│   │   │       ├── alert.tsx          # 알림
+│   │   │       ├── aspect-ratio.tsx   # 비율 고정 컨테이너
 │   │   │       ├── avatar.tsx         # 아바타
 │   │   │       ├── badge.tsx          # 배지
 │   │   │       ├── breadcrumb.tsx     # 경로 표시
@@ -154,19 +177,29 @@ Desktop/4/
 │   │   │       ├── carousel.tsx       # 캐러셀
 │   │   │       ├── chart.tsx          # 차트 (recharts 래퍼)
 │   │   │       ├── checkbox.tsx       # 체크박스
+│   │   │       ├── collapsible.tsx    # 접기/펼치기
+│   │   │       ├── command.tsx        # 커맨드 팔레트
+│   │   │       ├── context-menu.tsx   # 컨텍스트 메뉴
 │   │   │       ├── dialog.tsx         # 다이얼로그
 │   │   │       ├── drawer.tsx         # 드로어
 │   │   │       ├── dropdown-menu.tsx  # 드롭다운 메뉴
 │   │   │       ├── form.tsx           # 폼
+│   │   │       ├── hover-card.tsx     # 호버 카드
 │   │   │       ├── input.tsx          # 인풋
+│   │   │       ├── input-otp.tsx      # OTP 입력
 │   │   │       ├── label.tsx          # 레이블
+│   │   │       ├── menubar.tsx        # 메뉴바
+│   │   │       ├── navigation-menu.tsx # 네비게이션 메뉴
 │   │   │       ├── pagination.tsx     # 페이지네이션
+│   │   │       ├── popover.tsx        # 팝오버
 │   │   │       ├── progress.tsx       # 진행 바
 │   │   │       ├── radio-group.tsx    # 라디오 그룹
+│   │   │       ├── resizable.tsx      # 크기 조절 패널
 │   │   │       ├── scroll-area.tsx    # 스크롤 영역
 │   │   │       ├── select.tsx         # 셀렉트
 │   │   │       ├── separator.tsx      # 구분선
 │   │   │       ├── sheet.tsx          # 시트
+│   │   │       ├── sidebar.tsx        # 사이드바
 │   │   │       ├── skeleton.tsx       # 스켈레톤 로딩
 │   │   │       ├── slider.tsx         # 슬라이더
 │   │   │       ├── sonner.tsx         # 토스트 알림
@@ -174,6 +207,8 @@ Desktop/4/
 │   │   │       ├── table.tsx          # 테이블
 │   │   │       ├── tabs.tsx           # 탭
 │   │   │       ├── textarea.tsx       # 텍스트에어리어
+│   │   │       ├── toggle.tsx         # 토글
+│   │   │       ├── toggle-group.tsx   # 토글 그룹
 │   │   │       ├── tooltip.tsx        # 툴팁
 │   │   │       ├── use-mobile.ts      # 모바일 감지 커스텀 훅
 │   │   │       └── utils.ts           # cn() 유틸 함수 (clsx + tailwind-merge)
@@ -182,6 +217,9 @@ Desktop/4/
 │   │       ├── LanguageContext.tsx   # 언어 상태 (ko/en) + t() 번역 함수
 │   │       ├── CartContext.tsx       # 장바구니 전역 상태
 │   │       └── AuthContext.tsx       # 사용자 인증 전역 상태
+│   │
+│   ├── imports/
+│   │   └── supabase-auth.html    # Supabase 인증 참고 HTML (개발용)
 │   │
 │   ├── lib/
 │   │   ├── supabase.ts           # Supabase 클라이언트 초기화
@@ -261,7 +299,7 @@ SearchDialog.tsx    → useLanguage()
 AuthModal.tsx       → useAuth(), useLanguage()
 Chatbot.tsx         → useLanguage()
 CouponPopup.tsx     → useLanguage()
-CheckoutPage.tsx    → useCart(), useLanguage()
+CheckoutPage.tsx    → useCart(), useLanguage(), useAuth()
 AccountPage.tsx     → useAuth(), useLanguage()
 
 Contexts:
@@ -281,6 +319,7 @@ Library:
 | 장바구니 아이템 | localStorage | `klear_cart` | 브라우저 닫아도 유지 |
 | 로그인 사용자 정보 | localStorage | `klear_user` | 자동 로그인 시 사용 |
 | 자동 로그인 여부 | localStorage | `klear_auto_login` | "기억하기" 체크박스 상태 |
+| 주문 내역 | localStorage | `klear_orders_${user.id}` | **유저별 독립 저장** — 타 계정 주문 혼입 방지 |
 | 상품별 별점 | localStorage | `klear_reviews` | 사용자 리뷰 영속 저장 |
 | 쿠폰 팝업 닫기 여부 | sessionStorage | `klear_coupon_dismissed` | 탭/창 닫으면 초기화 |
 | 회원 정보 (DB) | Supabase PostgreSQL | `users` 테이블 | 서버 영속 저장 |
@@ -372,13 +411,15 @@ type ModalView = 'login' | 'signup' | 'findId' | 'findPassword' | 'signupSuccess
 
 2열 레이아웃으로 구성:
 - **좌측:** 결제 수단 탭 선택 (신용카드 / PayPal / Apple Pay) + 카드 입력 폼
-- **우측:** 주문 요약 패널 (상품 목록, 소계, 배송비, 최종 금액)
+- **우측:** 주문 요약 패널 (상품 목록, 쿠폰 할인, 세금, 최종 금액)
 
 결제 처리 흐름:
 1. 결제 수단 선택
 2. 카드번호 / 유효기간(MM/YY) / CVV / 카드명 입력
-3. "결제 완료" 클릭 → 2초 딜레이 로딩 (시뮬레이션)
-4. 성공 화면 표시 → 주문 번호 생성 + `clearCart()` 호출
+3. 쿠폰 코드 입력 (선택) — `WELCOME20` 20% / `SUMMER10` 10%
+4. "결제 완료" 클릭 → 2초 딜레이 로딩 (시뮬레이션)
+5. 성공 화면 → 주문 번호 생성 + `clearCart()` 호출
+6. 주문은 **`klear_orders_${user.id}`** 키로 유저별 분리 저장
 
 > **주의:** 실제 PG(결제대행) 연동 없음 — 완전 시뮬레이션
 
@@ -390,9 +431,14 @@ type ModalView = 'login' | 'signup' | 'findId' | 'findPassword' | 'signupSuccess
 
 | 탭 | 표시 내용 |
 |----|---------|
-| 프로필 | 아바타, 로그인 아이디, 이메일, 가입일, 연락처 정보 |
-| 주문 내역 | 샘플 주문 데이터 (하드코딩, 실제 DB 미연동) |
+| 프로필 | 아바타, 로그인 아이디, 이메일, 회원 등급 |
+| 주문 내역 | 유저별 주문 목록 (`klear_orders_${user.id}`) + 배송취소 버튼 |
 | 쿠폰 | 사용 가능한 할인 코드 목록 + 클립보드 복사 버튼 |
+
+**배송취소 기능:**
+- 배송준비중 주문에 **취소** 버튼 표시
+- 취소 클릭 시 해당 주문 `status → 'cancelled'` 변경 후 localStorage 업데이트
+- 취소된 주문은 **취소됨** 뱃지로 표시 (재취소 불가)
 
 ---
 
@@ -1086,4 +1132,4 @@ Phase 3 (운영 인프라):
 
 ---
 
-*작성일: 2026-02-27 | 프로젝트 버전: 0.0.1*
+*작성일: 2026-02-27 | 최종 수정: 2026-03-04 | 프로젝트 버전: 0.0.1*

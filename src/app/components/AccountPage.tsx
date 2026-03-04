@@ -27,9 +27,22 @@ export function AccountPage({ onBack }: AccountPageProps) {
   const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
-    const saved = localStorage.getItem('klear_orders');
+    if (!user) return;
+    const orderKey = `klear_orders_${user.id}`;
+    const saved = localStorage.getItem(orderKey);
     if (saved) setOrders(JSON.parse(saved));
-  }, [activeTab]);
+    else setOrders([]);
+  }, [activeTab, user]);
+
+  const handleCancelOrder = (orderId: string) => {
+    if (!user) return;
+    const orderKey = `klear_orders_${user.id}`;
+    const updated = orders.map((o) =>
+      o.id === orderId ? { ...o, status: 'cancelled' } : o
+    );
+    setOrders(updated);
+    localStorage.setItem(orderKey, JSON.stringify(updated));
+  };
 
   const handleCopyCoupon = (code: string) => {
     navigator.clipboard.writeText(code).then(() => {
@@ -178,9 +191,25 @@ export function AccountPage({ onBack }: AccountPageProps) {
                               <p className="font-bold text-[#111111]">{order.id}</p>
                               <p className="text-sm text-[#2C2C2C]/60">{order.date}</p>
                             </div>
-                            <span className="px-3 py-1 rounded-full text-sm font-medium bg-amber-50 text-amber-600">
-                              {language === 'ko' ? '배송준비중' : 'Processing'}
-                            </span>
+                            <div className="flex items-center gap-2">
+                              {order.status === 'cancelled' ? (
+                                <span className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-400">
+                                  {language === 'ko' ? '취소됨' : 'Cancelled'}
+                                </span>
+                              ) : (
+                                <>
+                                  <span className="px-3 py-1 rounded-full text-sm font-medium bg-amber-50 text-amber-600">
+                                    {language === 'ko' ? '배송준비중' : 'Processing'}
+                                  </span>
+                                  <button
+                                    onClick={() => handleCancelOrder(order.id)}
+                                    className="px-3 py-1 rounded-full text-sm font-medium bg-red-50 text-red-500 hover:bg-red-100 transition-colors"
+                                  >
+                                    {language === 'ko' ? '취소' : 'Cancel'}
+                                  </button>
+                                </>
+                              )}
+                            </div>
                           </div>
                           <div className="space-y-1 mb-3">
                             {order.items.map((item) => (

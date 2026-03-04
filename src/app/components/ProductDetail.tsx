@@ -13,14 +13,16 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
   const { language } = useLanguage();
   const { addToCart } = useCart();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  
-  // 1. 이미지 슬라이더 상태 및 데이터 추가
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const heroImages = [
-    './sunserum_hero.png', // 기존 이미지
+    './sunserum_hero.png',
     '/pd_2.png',
     '/pd_3.png',
     '/pd_4.png',
@@ -30,14 +32,26 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
     '/pd_8.png',
   ];
 
+  const variants = [
+    {
+      id: 'bemot-sun-serum-50ml-clear-white',
+      name: language === 'ko' ? '비모트 하이드레이팅 선 세럼 SPF50 – 클리어 화이트' : 'Bemot Hydrating Sun Serum SPF 50 – Clear White',
+      price: 24.99,
+    },
+    {
+      id: 'bemot-sun-serum-50ml-rosy-pink',
+      name: language === 'ko' ? '비모트 하이드레이팅 선 세럼 SPF50 – 로지 핑크' : 'Bemot Hydrating Sun Serum SPF 50 – Rosy Pink',
+      price: 24.99,
+    },
+  ];
+
   const product = {
     id: 'bemot-sun-serum-50ml',
     name: language === 'ko' ? '비모트 수분 선 세럼 SPF 50' : 'Bemot Moisturizing Sun Serum SPF 50',
-    price: 29.99,
+    price: 24.99,
     volume: '50ml / 1.69 fl oz',
   };
 
-  // 2. 슬라이더 제어 함수
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev === 0 ? heroImages.length - 1 : prev - 1));
   };
@@ -47,12 +61,29 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
   };
 
   const handleBuyNow = () => {
-    addToCart({ id: product.id, name: product.name, price: product.price, image: heroImages[0] });
+    if (!selectedVariant) {
+      setShowDropdown(true);
+      return;
+    }
+    const variant = variants.find(v => v.id === selectedVariant);
+    if (!variant) return;
+    addToCart({ id: variant.id, name: variant.name, price: variant.price, image: heroImages[0] });
     onBuyNow();
   };
 
   const handleAddToCart = () => {
-    addToCart({ id: product.id, name: product.name, price: product.price, image: heroImages[0] });
+    if (!selectedVariant) {
+      setShowDropdown(true);
+      return;
+    }
+    const variant = variants.find(v => v.id === selectedVariant);
+    if (!variant) return;
+    addToCart({ id: variant.id, name: variant.name, price: variant.price, image: heroImages[0] });
+  };
+
+  const handleSelectVariant = (id: string) => {
+    setSelectedVariant(id);
+    setShowDropdown(false);
   };
 
   const benefits = [
@@ -90,10 +121,9 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
     { q: language === 'ko' ? '방수 기능이 있나요?' : 'Is this water-resistant?', a: language === 'ko' ? '40분간 중등도의 방수 기능이 있지만, 수영 후 재도포를 권장합니다.' : 'It offers moderate water resistance (40 minutes), but reapplication after swimming is recommended.' },
   ];
 
-  // 상세 이미지 배열
   const detailImages = ['/pd_1.png', '/pd_2.png', '/pd_3.png', '/pd_4.png', '/pd_5.png', '/pd_6.png', '/pd_7.png', '/pd_8-1.png', '/pd_9.png'];
 
-return (
+  return (
     <div className="pt-20 bg-[#FAFAF8]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <button onClick={onBack} className="flex items-center gap-2 text-[#2C2C2C]/60 hover:text-[#6F832E] transition-colors">
@@ -104,7 +134,6 @@ return (
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* 3. 이미지 슬라이더 UI 수정 */}
           <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="relative group">
             <div className="rounded-3xl overflow-hidden bg-white border border-[#E6E6E0] h-[500px] lg:h-[600px] relative">
               <AnimatePresence mode="wait">
@@ -120,25 +149,23 @@ return (
                 />
               </AnimatePresence>
 
-              {/* 화살표 버튼 */}
-              <button 
+              <button
                 onClick={prevSlide}
                 className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 border border-[#E6E6E0] text-[#111111] hover:bg-white transition-all opacity-0 group-hover:opacity-100"
               >
                 <ChevronLeft size={24} />
               </button>
-              <button 
+              <button
                 onClick={nextSlide}
                 className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 border border-[#E6E6E0] text-[#111111] hover:bg-white transition-all opacity-0 group-hover:opacity-100"
               >
                 <ChevronRight size={24} />
               </button>
 
-              {/* 페이지 인디케이터 (선택 사항) */}
               <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
                 {heroImages.map((_, i) => (
-                  <div 
-                    key={i} 
+                  <div
+                    key={i}
                     className={`w-2 h-2 rounded-full transition-all ${i === currentIndex ? 'bg-[#A9C356] w-6' : 'bg-[#111111]/20'}`}
                   />
                 ))}
@@ -158,13 +185,13 @@ return (
             </p>
 
             <div className="flex items-center gap-2">
-              {[1,2,3,4,5].map(i => <Star key={i} size={20} className="text-[#A9C356] fill-[#A9C356]" />)}
+              {[1, 2, 3, 4, 5].map(i => <Star key={i} size={20} className="text-[#A9C356] fill-[#A9C356]" />)}
               <span className="text-sm text-[#2C2C2C]/60 ml-2">(4.5/5 · 241 {language === 'ko' ? '리뷰' : 'reviews'})</span>
             </div>
 
             <div className="flex items-baseline gap-3 text-3xl font-bold">
               <span className="text-[#EF4444]">${product.price.toFixed(2)}</span>
-              <span className="text-[#9CA3AF] line-through text-xl">$35</span>
+              <span className="text-[#9CA3AF] line-through text-xl">$32</span>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
@@ -176,7 +203,56 @@ return (
               ))}
             </div>
 
-            <div className="flex gap-4 mt-auto pt-2">
+            {/* Variant Dropdown */}
+            <div className="relative mt-auto">
+              <button
+                onClick={() => setShowDropdown(!showDropdown)}
+                className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border-2 bg-white transition-all duration-200 ${
+                  showDropdown ? 'border-[#A9C356]' : 'border-[#E6E6E0] hover:border-[#A9C356]/60'
+                }`}
+              >
+                <span className={`text-sm ${selectedVariant ? 'text-[#111111] font-medium' : 'text-[#9CA3AF]'}`}>
+                  {selectedVariant
+                    ? variants.find(v => v.id === selectedVariant)?.name
+                    : language === 'ko' ? '옵션을 선택해주세요' : 'Select an option'}
+                </span>
+                <ChevronDown size={18} className={`text-[#6B7280] transition-transform duration-200 ${showDropdown ? 'rotate-180' : ''}`} />
+              </button>
+
+              <AnimatePresence>
+                {showDropdown && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#E6E6E0] rounded-xl shadow-lg z-10 overflow-hidden"
+                  >
+                    <div className="px-4 py-2.5 text-xs font-bold text-[#6B7280] uppercase tracking-wider border-b border-[#F3F4F6]">
+                      {language === 'ko' ? '제품 옵션' : 'Product Options'}
+                    </div>
+                    {variants.map((variant) => (
+                      <button
+                        key={variant.id}
+                        onClick={() => handleSelectVariant(variant.id)}
+                        className={`w-full flex items-center justify-between px-4 py-3 text-left transition-colors ${
+                          selectedVariant === variant.id
+                            ? 'bg-[#EEF2E0] text-[#6F832E]'
+                            : 'text-[#111111] hover:bg-[#F9FBF2]'
+                        }`}
+                      >
+                        <span className="text-sm">{variant.name}</span>
+                        {selectedVariant === variant.id && (
+                          <Check size={16} className="text-[#A9C356] flex-shrink-0 ml-2" />
+                        )}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <div className="flex gap-4 pt-2">
               <button onClick={handleBuyNow} className="flex-1 py-4 bg-[#A9C356] hover:bg-[#8FA93C] text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-[#A9C356]/30 transition-all duration-300 hover:scale-105 text-lg">
                 {language === 'ko' ? '지금 구매하기' : 'Buy Now'}
               </button>
@@ -212,19 +288,17 @@ return (
       {/* Brand Story & Detail Images */}
       <section className="bg-[#EEF2E0] py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-xl mx-auto aspect-video rounded-xl overflow-hidden shadow-lg border border-[#E6E6E0]/50 mb-20">
-            <iframe
+          <div className="max-w-3xl mx-auto aspect-video rounded-xl overflow-hidden shadow-lg border border-[#E6E6E0]/50 mb-20">
+            <video
               width="100%"
               height="100%"
-              src="https://www.youtube.com/embed/EngW7tLk6R8"
-              title="Klear Product Video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+              controls
+              className="w-full h-full object-cover"
+            >
+              <source src="/adv_video.mp4" type="video/mp4" />
+            </video>
           </div>
 
-          {/* pd1 ~ pd6 Images */}
           <div className="max-w-4xl mx-auto space-y-0 flex flex-col items-center">
             {detailImages.map((img, idx) => (
               <motion.img
@@ -309,6 +383,8 @@ return (
           </button>
         </div>
       </section>
+
+      {/* Variant Select Modal - removed, now using inline dropdown */}
     </div>
   );
 }

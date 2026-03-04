@@ -69,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .single();
 
       if (error || !data) {
-        return { success: false, error: '아이디 또는 비밀번호가 틀렸습니다.' };
+        return { success: false, error: 'INVALID_CREDENTIALS' }; // ← 변경
       }
 
       const userData = {
@@ -109,7 +109,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .single();
 
       if (error || !data) {
-        return { success: false, error: '해당 이메일로 등록된 아이디가 없습니다.' };
+        return { success: false, error: 'EMAIL_NOT_FOUND' }; // ← 변경
       }
 
       return { success: true, loginId: data.login_id };
@@ -128,7 +128,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .single();
 
       if (error || !data) {
-        return { success: false, error: '아이디와 이메일이 일치하는 계정이 없습니다.' };
+        return { success: false, error: 'ACCOUNT_NOT_FOUND' }; // ← 변경
       }
 
       // 임시 비밀번호 생성

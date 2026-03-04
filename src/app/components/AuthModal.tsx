@@ -29,6 +29,25 @@ export function AuthModal({ isOpen, onClose, onGoToAccount }: AuthModalProps) {
 
   const COUPON_CODE = 'WELCOME20';
 
+  // ✅ 에러 코드 → 현재 언어에 맞는 메시지로 변환
+  const translateError = (error: string) => {
+    const errors: Record<string, { ko: string; en: string }> = {
+      INVALID_CREDENTIALS: {
+        ko: '아이디 또는 비밀번호가 틀렸습니다.',
+        en: 'Invalid username or password.',
+      },
+      EMAIL_NOT_FOUND: {
+        ko: '해당 이메일로 등록된 아이디가 없습니다.',
+        en: 'No account found with this email.',
+      },
+      ACCOUNT_NOT_FOUND: {
+        ko: '아이디와 이메일이 일치하는 계정이 없습니다.',
+        en: 'No account matches the provided ID and email.',
+      },
+    };
+    return errors[error]?.[language] ?? error;
+  };
+
   const resetForm = () => {
     setLoginId('');
     setPassword('');
@@ -84,7 +103,8 @@ export function AuthModal({ isOpen, onClose, onGoToAccount }: AuthModalProps) {
         if (onGoToAccount) onGoToAccount();
       }, 1000);
     } else {
-      setStatus(result.error || (language === 'ko' ? '로그인 실패' : 'Login failed'));
+      // ✅ translateError로 언어에 맞게 변환
+      setStatus(translateError(result.error || '') || (language === 'ko' ? '로그인 실패' : 'Login failed'));
     }
     setIsLoading(false);
   };
@@ -100,7 +120,8 @@ export function AuthModal({ isOpen, onClose, onGoToAccount }: AuthModalProps) {
       setFoundId(result.loginId);
       setStatus(language === 'ko' ? '✅ 아이디를 찾았습니다!' : '✅ ID found!');
     } else {
-      setStatus(result.error || (language === 'ko' ? '아이디를 찾을 수 없습니다.' : 'ID not found.'));
+      // ✅ translateError로 언어에 맞게 변환
+      setStatus(translateError(result.error || '') || (language === 'ko' ? '아이디를 찾을 수 없습니다.' : 'ID not found.'));
     }
     setIsLoading(false);
   };
@@ -116,7 +137,8 @@ export function AuthModal({ isOpen, onClose, onGoToAccount }: AuthModalProps) {
       setTempPassword(result.tempPassword);
       setStatus(language === 'ko' ? '✅ 임시 비밀번호가 생성되었습니다!' : '✅ Temporary password generated!');
     } else {
-      setStatus(result.error || (language === 'ko' ? '비밀번호를 찾을 수 없습니다.' : 'Password reset failed.'));
+      // ✅ translateError로 언어에 맞게 변환
+      setStatus(translateError(result.error || '') || (language === 'ko' ? '비밀번호를 찾을 수 없습니다.' : 'Password reset failed.'));
     }
     setIsLoading(false);
   };
@@ -214,7 +236,7 @@ export function AuthModal({ isOpen, onClose, onGoToAccount }: AuthModalProps) {
                       <label htmlFor="rememberMe" className="text-sm text-[#2C2C2C]/60 cursor-pointer">{language === 'ko' ? '자동 로그인' : 'Remember me'}</label>
                     </div>
                     {status && (
-                      <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className={`text-sm text-center ${status.includes('✅') ? 'text-[#6F832E]' : status.includes('오류') || status.includes('Error') || status.includes('실패') || status.includes('failed') || status.includes('틀렸') ? 'text-red-500' : 'text-[#8FA93C]'}`}>{status}</motion.p>
+                      <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className={`text-sm text-center ${status.includes('✅') ? 'text-[#6F832E]' : status.includes('오류') || status.includes('Error') || status.includes('실패') || status.includes('failed') || status.includes('Invalid') || status.includes('틀렸') ? 'text-red-500' : 'text-[#8FA93C]'}`}>{status}</motion.p>
                     )}
                     <button onClick={handleSignIn} disabled={isLoading} className="w-full py-3 bg-[#A9C356] hover:bg-[#8FA93C] text-white rounded-xl font-semibold transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
                       {isLoading ? (language === 'ko' ? '처리 중...' : 'Processing...') : (language === 'ko' ? '로그인' : 'Login')}

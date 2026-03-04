@@ -64,7 +64,7 @@ export function Footer({ onGoToAbout, onProductClick, onGoToTerms, onOpenChatbot
     ],
     company: [
       { label: t('footer.company1'), href: '#about' },
-      { label: t('footer.company2'), href: '#' },
+      { label: t('footer.company2'), href: 'https://klear-intranet.onrender.com/', external: true },
     ],
     support: [
       { label: t('footer.support1'), href: '#chatbot', onClick: (e: React.MouseEvent) => { e.preventDefault(); onOpenChatbot?.(); } },
@@ -157,25 +157,29 @@ export function Footer({ onGoToAbout, onProductClick, onGoToTerms, onOpenChatbot
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      onClick={(e) => {
-                        if ('onClick' in link && link.onClick) {
-                          link.onClick(e);
-                        } else if (link.href.startsWith('#product/')) {
-                          e.preventDefault();
-                          const productId = link.href.replace('#product/', '');
-                          if (onProductClick) onProductClick(productId);
-                        } else if (link.href === '#about') {
-                          e.preventDefault();
-                          if (onGoToAbout) onGoToAbout();
-                        } else if (link.href === '#terms') {
-                          e.preventDefault();
-                          if (onGoToTerms) onGoToTerms();
-                        }
-                      }}
-                      className="text-[#2C2C2C]/60 hover:text-[#6F832E] transition-colors cursor-pointer"
-                    >
-                      {link.label}
-                    </a>
+                        target={'external' in link && link.external ? '_blank' : undefined}
+                        rel={'external' in link && link.external ? 'noopener noreferrer' : undefined}
+                        onClick={(e) => {
+                          if ('onClick' in link && link.onClick) {
+                            link.onClick(e);
+                          } else if ('external' in link && link.external) {
+                            // 그냥 href로 이동 (기본 동작 유지)
+                          } else if (link.href.startsWith('#product/')) {
+                            e.preventDefault();
+                            const productId = link.href.replace('#product/', '');
+                            if (onProductClick) onProductClick(productId);
+                          } else if (link.href === '#about') {
+                            e.preventDefault();
+                            if (onGoToAbout) onGoToAbout();
+                          } else if (link.href === '#terms') {
+                            e.preventDefault();
+                            if (onGoToTerms) onGoToTerms();
+                          }
+                        }}
+                        className="text-[#2C2C2C]/60 hover:text-[#6F832E] transition-colors cursor-pointer"
+                      >
+                        {link.label}
+                      </a>
                   </li>
                 ))}
               </ul>
