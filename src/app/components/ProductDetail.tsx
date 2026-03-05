@@ -121,7 +121,18 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
     { q: language === 'ko' ? '방수 기능이 있나요?' : 'Is this water-resistant?', a: language === 'ko' ? '40분간 중등도의 방수 기능이 있지만, 수영 후 재도포를 권장합니다.' : 'It offers moderate water resistance (40 minutes), but reapplication after swimming is recommended.' },
   ];
 
-  const detailImages = ['/pd_1.png', '/pd_2.png', '/pd_3.png', '/pd_4.png', '/pd_5.png', '/pd_6.png', '/pd_7.png', '/pd_8-1.png', '/pd_9.png'];
+  const detailMedia = [
+  { type: 'image', src: '/pd_1.png' },
+  { type: 'image', src: '/pd_2.png' },
+  { type: 'image', src: '/pd_3.png' },
+  { type: 'image', src: '/pd_4.png' },
+  { type: 'image', src: '/pd_5.png' },
+  { type: 'image', src: '/pd_6.png' },
+  { type: 'video', src: '/pd_10.mp4' },
+  { type: 'image', src: '/pd_7.png' },
+  { type: 'image', src: '/pd_8-1.png' },
+  { type: 'image', src: '/pd_9.png' },
+  ];
 
   return (
     <div className="pt-20 bg-[#FAFAF8]">
@@ -300,17 +311,33 @@ export function ProductDetail({ onBuyNow, onBack }: ProductDetailProps) {
           </div>
 
           <div className="max-w-4xl mx-auto space-y-0 flex flex-col items-center">
-            {detailImages.map((img, idx) => (
-              <motion.img
-                key={idx}
-                src={`./${img}`}
-                alt={`Detail ${idx + 1}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="w-full h-auto object-contain"
-              />
+            {detailMedia.map((item, idx) => (
+              item.type === 'video' ? (
+                <motion.video
+                  key={idx}
+                  src={item.src}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                  className="w-full h-auto object-contain"
+                />
+              ) : (
+                <motion.img
+                  key={idx}
+                  src={`./${item.src}`}
+                  alt={`Detail ${idx + 1}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                  className="w-full h-auto object-contain"
+                />
+              )
             ))}
           </div>
         </div>
